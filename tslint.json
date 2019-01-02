@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "tslint-config-standard",
+    "tslint-config-prettier"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "dist",
+      ".rpt2_cache",
+      "tools"
+    ]
+  }
+}
