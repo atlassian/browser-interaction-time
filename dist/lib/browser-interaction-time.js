@@ -2,21 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var BrowserInteractionTime = /** @class */ (function () {
     function BrowserInteractionTime(_a, domApi) {
-        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, userLeftCallbacks = _a.userLeftCallbacks, userReturnCallbacks = _a.userReturnCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
+        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, userLeftCallbacks = _a.browserTabInactiveCallbacks, userReturnCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
         var _this = this;
-        this.triggerUserLeftPage = function () {
+        this.onBrowserTabInactive = function () {
             // if running pause timer
             if (_this.isRunning) {
                 _this.stopTimer();
             }
-            _this.userLeftCallbacks.forEach(function (fn) { return fn(); });
+            _this.browserTabInactiveCallbacks.forEach(function (fn) { return fn(); });
         };
-        this.triggerUserHasReturned = function () {
+        this.onBrowserTabActive = function () {
             // if not running start timer
             if (!_this.isRunning) {
                 _this.startTimer();
             }
-            _this.userReturnCallbacks.forEach(function (fn) { return fn(); });
+            _this.browserTabActiveCallbacks.forEach(function (fn) { return fn(); });
         };
         this.onTimePassed = function () {
             // check all callbacks time and if passed execute callback
@@ -41,16 +41,16 @@ var BrowserInteractionTime = /** @class */ (function () {
         };
         this.visibilityChangeHandler = function () {
             if (_this.domApi.hidden) {
-                _this.triggerUserLeftPage();
+                _this.onBrowserTabInactive();
             }
             else {
-                _this.triggerUserHasReturned();
+                _this.onBrowserTabActive();
             }
         };
         this.registerEventListeners = function () {
             _this.domApi.addEventListener('visibilitychange', _this.visibilityChangeHandler, false);
-            _this.domApi.addEventListener('blur', _this.triggerUserLeftPage);
-            _this.domApi.addEventListener('focus', _this.triggerUserHasReturned);
+            _this.domApi.addEventListener('blur', _this.onBrowserTabInactive);
+            _this.domApi.addEventListener('focus', _this.onBrowserTabActive);
             _this.domApi.addEventListener('scroll', _this.resetIdleCountdown);
             _this.domApi.addEventListener('mousemove', _this.resetIdleCountdown);
             _this.domApi.addEventListener('keyup', _this.resetIdleCountdown);
@@ -58,8 +58,8 @@ var BrowserInteractionTime = /** @class */ (function () {
         };
         this.unregisterEventListeners = function () {
             _this.domApi.removeEventListener('visibilitychange', _this.visibilityChangeHandler, false);
-            _this.domApi.removeEventListener('blur', _this.triggerUserLeftPage);
-            _this.domApi.removeEventListener('focus', _this.triggerUserHasReturned);
+            _this.domApi.removeEventListener('blur', _this.onBrowserTabInactive);
+            _this.domApi.removeEventListener('focus', _this.onBrowserTabActive);
             _this.domApi.removeEventListener('scroll', _this.resetIdleCountdown);
             _this.domApi.removeEventListener('mousemove', _this.resetIdleCountdown);
             _this.domApi.removeEventListener('keyup', _this.resetIdleCountdown);
@@ -72,7 +72,7 @@ var BrowserInteractionTime = /** @class */ (function () {
         };
         this.startTimer = function () {
             var last = _this.times[_this.times.length - 1];
-            if (last && last.start && last.stop === undefined) {
+            if (last && last.start && last.stop === null) {
                 return;
             }
             _this.times.push({
@@ -94,11 +94,11 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.addAbsoluteTimeEllapsedCallback = function (absoluteTimeEllapsedCallback) {
             _this.absoluteTimeEllapsedCallbacks.push(absoluteTimeEllapsedCallback);
         };
-        this.addUserLeftCallback = function (userLeftCallback) {
-            _this.userLeftCallbacks.push(userLeftCallback);
+        this.addBrowserTabInactiveCallback = function (browserTabInactiveCallback) {
+            _this.browserTabInactiveCallbacks.push(browserTabInactiveCallback);
         };
-        this.addUserReturnCallback = function (userReturnCallback) {
-            _this.userReturnCallbacks.push(userReturnCallback);
+        this.addBrowserTabActiveCallback = function (browserTabActiveCallback) {
+            _this.browserTabActiveCallbacks.push(browserTabActiveCallback);
         };
         this.getTimeInMilliseconds = function () {
             return _this.times.reduce(function (acc, current) {
@@ -113,7 +113,7 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.isRunning = function () {
             return _this.isRunning;
         };
-        this.resetTime = function () {
+        this.reset = function () {
             _this.times = [];
         };
         this.destroy = function () {
@@ -122,8 +122,8 @@ var BrowserInteractionTime = /** @class */ (function () {
                 _this.domApi.clearInterval(_this.checkCallbackIntervalId);
             }
         };
-        this.userReturnCallbacks = userReturnCallbacks;
-        this.userLeftCallbacks = userLeftCallbacks;
+        this.browserTabActiveCallbacks = userReturnCallbacks;
+        this.browserTabInactiveCallbacks = userLeftCallbacks;
         this.times = [];
         this.idle = false;
         this.currentIdleTimeMs = 0;

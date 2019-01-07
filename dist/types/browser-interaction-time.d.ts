@@ -1,19 +1,18 @@
-declare type NoArgNoReturn = () => void;
-interface BaseTimeEllapsedCallback {
+interface BaseTimeEllapsedCallbackData {
     callback: () => void;
     timeInMilliseconds: number;
 }
-export interface TimeIntervalEllapsedCallback extends BaseTimeEllapsedCallback {
+export interface TimeIntervalEllapsedCallbackData extends BaseTimeEllapsedCallbackData {
     multiplier: (time: number) => number;
 }
-export interface AbsoluteTimeEllapsedCallback extends BaseTimeEllapsedCallback {
+export interface AbsoluteTimeEllapsedCallbackData extends BaseTimeEllapsedCallbackData {
     pending: boolean;
 }
 interface Settings {
-    timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallback[];
-    absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallback[];
-    userLeftCallbacks: NoArgNoReturn[];
-    userReturnCallbacks: NoArgNoReturn[];
+    timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[];
+    absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[];
+    browserTabInactiveCallbacks: Function[];
+    browserTabActiveCallbacks: Function[];
     pauseOnMouseMovement: boolean;
     pauseOnScroll: boolean;
     idleTimeoutMs: number;
@@ -35,14 +34,14 @@ export default class BrowserInteractionTime {
     private checkCallbacksIntervalMs;
     private idle;
     private checkCallbackIntervalId?;
-    private userReturnCallbacks;
-    private userLeftCallbacks;
+    private browserTabActiveCallbacks;
+    private browserTabInactiveCallbacks;
     private timeIntervalEllapsedCallbacks;
     private absoluteTimeEllapsedCallbacks;
     private domApi;
-    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, userLeftCallbacks, userReturnCallbacks, idleTimeoutMs }: Settings, domApi: DomApi);
-    private triggerUserLeftPage;
-    private triggerUserHasReturned;
+    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks: userLeftCallbacks, browserTabActiveCallbacks: userReturnCallbacks, idleTimeoutMs }: Settings, domApi: DomApi);
+    private onBrowserTabInactive;
+    private onBrowserTabActive;
     private onTimePassed;
     private resetIdleCountdown;
     private visibilityChangeHandler;
@@ -51,13 +50,13 @@ export default class BrowserInteractionTime {
     private checkCallbacksOnInterval;
     startTimer: () => void;
     stopTimer: () => void;
-    addTimeIntervalEllapsedCallback: (timeIntervalEllapsedCallback: TimeIntervalEllapsedCallback) => void;
-    addAbsoluteTimeEllapsedCallback: (absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallback) => void;
-    addUserLeftCallback: (userLeftCallback: NoArgNoReturn) => void;
-    addUserReturnCallback: (userReturnCallback: NoArgNoReturn) => void;
+    addTimeIntervalEllapsedCallback: (timeIntervalEllapsedCallback: TimeIntervalEllapsedCallbackData) => void;
+    addAbsoluteTimeEllapsedCallback: (absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallbackData) => void;
+    addBrowserTabInactiveCallback: (browserTabInactiveCallback: Function) => void;
+    addBrowserTabActiveCallback: (browserTabActiveCallback: Function) => void;
     getTimeInMilliseconds: () => number;
     isRunning: () => any;
-    resetTime: () => void;
+    reset: () => void;
     destroy: () => void;
 }
 export {};

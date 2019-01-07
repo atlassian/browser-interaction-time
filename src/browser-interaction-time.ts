@@ -1,23 +1,23 @@
-type NoArgNoReturn = () => void
-
-interface BaseTimeEllapsedCallback {
+interface BaseTimeEllapsedCallbackData {
   callback: () => void
   timeInMilliseconds: number
 }
 
-export interface TimeIntervalEllapsedCallback extends BaseTimeEllapsedCallback {
+export interface TimeIntervalEllapsedCallbackData
+  extends BaseTimeEllapsedCallbackData {
   multiplier: (time: number) => number
 }
 
-export interface AbsoluteTimeEllapsedCallback extends BaseTimeEllapsedCallback {
+export interface AbsoluteTimeEllapsedCallbackData
+  extends BaseTimeEllapsedCallbackData {
   pending: boolean
 }
 
 interface Settings {
-  timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallback[]
-  absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallback[]
-  userLeftCallbacks: NoArgNoReturn[]
-  userReturnCallbacks: NoArgNoReturn[]
+  timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
+  absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
+  browserTabInactiveCallbacks: Function[]
+  browserTabActiveCallbacks: Function[]
   pauseOnMouseMovement: boolean
   pauseOnScroll: boolean
   idleTimeoutMs: number
@@ -45,10 +45,10 @@ export default class BrowserInteractionTime {
   private checkCallbacksIntervalMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
-  private userReturnCallbacks: NoArgNoReturn[]
-  private userLeftCallbacks: NoArgNoReturn[]
-  private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallback[]
-  private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallback[]
+  private browserTabActiveCallbacks: Function[]
+  private browserTabInactiveCallbacks: Function[]
+  private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
+  private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
   private domApi: DomApi
 
   constructor(
@@ -56,14 +56,14 @@ export default class BrowserInteractionTime {
       timeIntervalEllapsedCallbacks,
       absoluteTimeEllapsedCallbacks,
       checkCallbacksIntervalMs,
-      userLeftCallbacks,
-      userReturnCallbacks,
+      browserTabInactiveCallbacks: userLeftCallbacks,
+      browserTabActiveCallbacks: userReturnCallbacks,
       idleTimeoutMs
     }: Settings,
     domApi: DomApi
   ) {
-    this.userReturnCallbacks = userReturnCallbacks
-    this.userLeftCallbacks = userLeftCallbacks
+    this.browserTabActiveCallbacks = userReturnCallbacks
+    this.browserTabInactiveCallbacks = userLeftCallbacks
     this.times = []
     this.idle = false
     this.currentIdleTimeMs = 0
@@ -78,20 +78,20 @@ export default class BrowserInteractionTime {
     this.checkCallbacksOnInterval()
   }
 
-  private triggerUserLeftPage = () => {
+  private onBrowserTabInactive = () => {
     // if running pause timer
     if (this.isRunning) {
       this.stopTimer()
     }
-    this.userLeftCallbacks.forEach(fn => fn())
+    this.browserTabInactiveCallbacks.forEach(fn => fn())
   }
 
-  private triggerUserHasReturned = () => {
+  private onBrowserTabActive = () => {
     // if not running start timer
     if (!this.isRunning) {
       this.startTimer()
     }
-    this.userReturnCallbacks.forEach(fn => fn())
+    this.browserTabActiveCallbacks.forEach(fn => fn())
   }
 
   private onTimePassed = () => {
@@ -124,9 +124,9 @@ export default class BrowserInteractionTime {
 
   private visibilityChangeHandler = () => {
     if (this.domApi.hidden) {
-      this.triggerUserLeftPage()
+      this.onBrowserTabInactive()
     } else {
-      this.triggerUserHasReturned()
+      this.onBrowserTabActive()
     }
   }
 
@@ -137,8 +137,8 @@ export default class BrowserInteractionTime {
       false
     )
 
-    this.domApi.addEventListener('blur', this.triggerUserLeftPage)
-    this.domApi.addEventListener('focus', this.triggerUserHasReturned)
+    this.domApi.addEventListener('blur', this.onBrowserTabInactive)
+    this.domApi.addEventListener('focus', this.onBrowserTabActive)
     this.domApi.addEventListener('scroll', this.resetIdleCountdown)
     this.domApi.addEventListener('mousemove', this.resetIdleCountdown)
     this.domApi.addEventListener('keyup', this.resetIdleCountdown)
@@ -152,8 +152,8 @@ export default class BrowserInteractionTime {
       false
     )
 
-    this.domApi.removeEventListener('blur', this.triggerUserLeftPage)
-    this.domApi.removeEventListener('focus', this.triggerUserHasReturned)
+    this.domApi.removeEventListener('blur', this.onBrowserTabInactive)
+    this.domApi.removeEventListener('focus', this.onBrowserTabActive)
     this.domApi.removeEventListener('scroll', this.resetIdleCountdown)
     this.domApi.removeEventListener('mousemove', this.resetIdleCountdown)
     this.domApi.removeEventListener('keyup', this.resetIdleCountdown)
@@ -168,7 +168,7 @@ export default class BrowserInteractionTime {
 
   public startTimer = () => {
     const last = this.times[this.times.length - 1]
-    if (last && last.start && last.stop === undefined) {
+    if (last && last.start && last.stop === null) {
       return
     }
     this.times.push({
@@ -187,23 +187,25 @@ export default class BrowserInteractionTime {
   }
 
   public addTimeIntervalEllapsedCallback = (
-    timeIntervalEllapsedCallback: TimeIntervalEllapsedCallback
+    timeIntervalEllapsedCallback: TimeIntervalEllapsedCallbackData
   ) => {
     this.timeIntervalEllapsedCallbacks.push(timeIntervalEllapsedCallback)
   }
 
   public addAbsoluteTimeEllapsedCallback = (
-    absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallback
+    absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallbackData
   ) => {
     this.absoluteTimeEllapsedCallbacks.push(absoluteTimeEllapsedCallback)
   }
 
-  public addUserLeftCallback = (userLeftCallback: NoArgNoReturn) => {
-    this.userLeftCallbacks.push(userLeftCallback)
+  public addBrowserTabInactiveCallback = (
+    browserTabInactiveCallback: Function
+  ) => {
+    this.browserTabInactiveCallbacks.push(browserTabInactiveCallback)
   }
 
-  public addUserReturnCallback = (userReturnCallback: NoArgNoReturn) => {
-    this.userReturnCallbacks.push(userReturnCallback)
+  public addBrowserTabActiveCallback = (browserTabActiveCallback: Function) => {
+    this.browserTabActiveCallbacks.push(browserTabActiveCallback)
   }
 
   public getTimeInMilliseconds = (): number => {
@@ -223,7 +225,7 @@ export default class BrowserInteractionTime {
     return this.isRunning
   }
 
-  public resetTime = () => {
+  public reset = () => {
     this.times = []
   }
 
