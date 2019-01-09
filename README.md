@@ -1,5 +1,11 @@
 # ⏰ browser-interaction-time
 
+[![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/atlassian/browser-interaction-time/master/LICENSE)
+[![Build Status](https://travis-ci.org/atlassian/browser-interaction-time.svg?branch=master)](https://travis-ci.org/atlassian/browser-interaction-time)
+[![npm](https://img.shields.io/npm/v/browser-interaction-time.svg)](https://www.npmjs.com/package/browser-interaction-time)
+[![SemVer](https://img.shields.io/badge/SemVer-2.0.0-brightgreen.svg)](http://semver.org/spec/v2.0.0.html)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
 browser-interaction-time lets you track the time a user is active on your webpage while ignoring time spent on a different tab or with a minimized window. It also ignores the time spent while the user is idle on a web page meaning after a certain amount of time (idleTimeoutMs) without any user interactions (scroll, mousemovement etc) the time will also stop until the next user interaction.
 
 ## Importing BrowserInteractionTime
