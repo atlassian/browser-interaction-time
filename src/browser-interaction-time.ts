@@ -98,7 +98,7 @@ export default class BrowserInteractionTime {
     // check all callbacks time and if passed execute callback
     this.absoluteTimeEllapsedCallbacks.forEach(
       ({ callback, pending, timeInMilliseconds }, index) => {
-        if (pending && timeInMilliseconds >= this.getTimeInMilliseconds()) {
+        if (pending && timeInMilliseconds <= this.getTimeInMilliseconds()) {
           callback()
           this.absoluteTimeEllapsedCallbacks[index].pending = true
         }
@@ -107,7 +107,7 @@ export default class BrowserInteractionTime {
 
     this.timeIntervalEllapsedCallbacks.forEach(
       ({ callback, timeInMilliseconds, multiplier }, index) => {
-        if (timeInMilliseconds >= this.getTimeInMilliseconds()) {
+        if (timeInMilliseconds <= this.getTimeInMilliseconds()) {
           callback()
           this.timeIntervalEllapsedCallbacks[
             index
@@ -122,8 +122,8 @@ export default class BrowserInteractionTime {
     this.currentIdleTimeMs = 0
   }
 
-  private visibilityChangeHandler = () => {
-    if (this.domApi.hidden) {
+  private visibilityChangeHandler = (event: Event) => {
+    if (!document.hidden) {
       this.onBrowserTabInactive()
     } else {
       this.onBrowserTabActive()
@@ -211,10 +211,13 @@ export default class BrowserInteractionTime {
   public getTimeInMilliseconds = (): number => {
     return this.times.reduce((acc, current) => {
       if (current.stop && current.start) {
-        return (
-          acc +
-          (current.stop.getMilliseconds() - current.start.getMilliseconds())
-        )
+        return acc + (current.stop.getTime() - current.start.getTime())
+      }
+
+      if (!current.stop && current.start) {
+        const now = new Date()
+
+        return acc + (now.getTime() - current.start.getTime())
       }
       return acc
     }, 0)

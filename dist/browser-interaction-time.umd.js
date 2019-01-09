@@ -26,14 +26,14 @@
               // check all callbacks time and if passed execute callback
               _this.absoluteTimeEllapsedCallbacks.forEach(function (_a, index) {
                   var callback = _a.callback, pending = _a.pending, timeInMilliseconds = _a.timeInMilliseconds;
-                  if (pending && timeInMilliseconds >= _this.getTimeInMilliseconds()) {
+                  if (pending && timeInMilliseconds <= _this.getTimeInMilliseconds()) {
                       callback();
                       _this.absoluteTimeEllapsedCallbacks[index].pending = true;
                   }
               });
               _this.timeIntervalEllapsedCallbacks.forEach(function (_a, index) {
                   var callback = _a.callback, timeInMilliseconds = _a.timeInMilliseconds, multiplier = _a.multiplier;
-                  if (timeInMilliseconds >= _this.getTimeInMilliseconds()) {
+                  if (timeInMilliseconds <= _this.getTimeInMilliseconds()) {
                       callback();
                       _this.timeIntervalEllapsedCallbacks[index].timeInMilliseconds = multiplier(timeInMilliseconds);
                   }
@@ -43,8 +43,8 @@
               _this.idle = false;
               _this.currentIdleTimeMs = 0;
           };
-          this.visibilityChangeHandler = function () {
-              if (_this.domApi.hidden) {
+          this.visibilityChangeHandler = function (event) {
+              if (!document.hidden) {
                   _this.onBrowserTabInactive();
               }
               else {
@@ -107,8 +107,11 @@
           this.getTimeInMilliseconds = function () {
               return _this.times.reduce(function (acc, current) {
                   if (current.stop && current.start) {
-                      return (acc +
-                          (current.stop.getMilliseconds() - current.start.getMilliseconds()));
+                      return acc + (current.stop.getTime() - current.start.getTime());
+                  }
+                  if (!current.stop && current.start) {
+                      var now = new Date();
+                      return acc + (now.getTime() - current.start.getTime());
                   }
                   return acc;
               }, 0);
