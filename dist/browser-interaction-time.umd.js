@@ -115,7 +115,7 @@
               return 0;
           };
           this.isRunning = function () {
-              return _this.isRunning;
+              return _this.running;
           };
           this.reset = function () {
               _this.times = [];

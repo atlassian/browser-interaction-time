@@ -55,7 +55,7 @@ export default class BrowserInteractionTime {
     addBrowserTabInactiveCallback: (browserTabInactiveCallback: Function) => void;
     addBrowserTabActiveCallback: (browserTabActiveCallback: Function) => void;
     getTimeInMilliseconds: () => number;
-    isRunning: () => any;
+    isRunning: () => boolean;
     reset: () => void;
     destroy: () => void;
 }
