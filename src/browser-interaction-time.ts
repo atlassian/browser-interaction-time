@@ -222,7 +222,7 @@ export default class BrowserInteractionTime {
   }
 
   public isRunning = () => {
-    return this.isRunning
+    return this.running
   }
 
   public reset = () => {
