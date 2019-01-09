@@ -12,7 +12,7 @@
   "author": "Max Heinz <mheinz@atlassian.com>",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/atlassian/browser-interaction-time"
   },
   "license": "MIT",
   "engines": {
@@ -32,7 +32,9 @@
     "semantic-release": "semantic-release",
     "semantic-release-prepare": "ts-node tools/semantic-release-prepare",
     "precommit": "lint-staged",
-    "travis-deploy-once": "travis-deploy-once"
+    "travis-deploy-once": "travis-deploy-once",
+    "prepush": "npm run test:prod && npm run build",
+    "commitmsg": "commitlint -E GIT_PARAMS"
   },
   "lint-staged": {
     "{src,test}/**/*.ts": [
