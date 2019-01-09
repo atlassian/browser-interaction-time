@@ -14,7 +14,7 @@ describe('BrowserInteractionTime', () => {
       domApi = {
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
-        setInterval: jest.fn(),
+        setInterval: jest.fn(() => 10),
         clearInterval: jest.fn(),
         hidden: false
       }
@@ -51,19 +51,27 @@ describe('BrowserInteractionTime', () => {
   })
   describe('API', () => {
     let DefaultBrowserInteractionTime: BrowserInteractionTime
+    let intervalCallback: TimeIntervalEllapsedCallbackData
     let domApi: DomApi
+
     beforeEach(() => {
       domApi = {
         addEventListener: jest.fn(),
         removeEventListener: jest.fn(),
-        setInterval: jest.fn(),
+        setInterval: jest.fn(() => 10),
         clearInterval: jest.fn(),
         hidden: false
       }
 
+      intervalCallback = {
+        timeInMilliseconds: 2000,
+        callback: jest.fn(),
+        multiplier: x => x * 2
+      }
+
       DefaultBrowserInteractionTime = new BrowserInteractionTime(
         {
-          timeIntervalEllapsedCallbacks: [],
+          timeIntervalEllapsedCallbacks: [intervalCallback],
           absoluteTimeEllapsedCallbacks: [],
           browserTabInactiveCallbacks: [],
           browserTabActiveCallbacks: [],
@@ -82,6 +90,31 @@ describe('BrowserInteractionTime', () => {
       expect(
         DefaultBrowserInteractionTime.getTimeInMilliseconds()
       ).toBeDefined()
+
+      expect(DefaultBrowserInteractionTime.isRunning()).toBe(false)
+    })
+
+    it('.start() and .stop() multiple times returns time in milliseconds', () => {
+      DefaultBrowserInteractionTime.startTimer()
+      DefaultBrowserInteractionTime.stopTimer()
+      DefaultBrowserInteractionTime.startTimer()
+      DefaultBrowserInteractionTime.stopTimer()
+      expect(
+        DefaultBrowserInteractionTime.getTimeInMilliseconds()
+      ).toBeDefined()
+
+      expect(DefaultBrowserInteractionTime.isRunning()).toBe(false)
+    })
+
+    it('.reset() returns 0 as timeInMilliseconds', () => {
+      DefaultBrowserInteractionTime.reset()
+      expect(DefaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(0)
+    })
+
+    it('.destroy() calls removeEventListener and setInterval', () => {
+      DefaultBrowserInteractionTime.destroy()
+      expect(domApi.removeEventListener).toHaveBeenCalledTimes(7)
+      expect(domApi.clearInterval).toBeCalled()
     })
   })
 })
