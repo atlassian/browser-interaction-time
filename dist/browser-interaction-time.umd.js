@@ -20,7 +20,6 @@
               if (!_this.isRunning) {
                   _this.startTimer();
               }
-              console.log('current time active is', _this.getTimeInMilliseconds());
               _this.browserTabActiveCallbacks.forEach(function (fn) { return fn(); });
           };
           this.onTimePassed = function () {

@@ -80,7 +80,6 @@ export default class BrowserInteractionTime {
     if (!this.isRunning) {
       this.startTimer()
     }
-    console.log('current time active is', this.getTimeInMilliseconds())
     this.browserTabActiveCallbacks.forEach(fn => fn())
   }
 
