@@ -1,7 +1,9 @@
 interface BaseTimeEllapsedCallbackData {
-  callback: () => void
+  callback: (timeInMs: number) => void
   timeInMilliseconds: number
 }
+
+type basicCallback = (timeInMs: number) => void
 
 export interface TimeIntervalEllapsedCallbackData
   extends BaseTimeEllapsedCallbackData {
@@ -16,8 +18,8 @@ export interface AbsoluteTimeEllapsedCallbackData
 interface Settings {
   timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
-  browserTabInactiveCallbacks: Function[]
-  browserTabActiveCallbacks: Function[]
+  browserTabInactiveCallbacks: basicCallback[]
+  browserTabActiveCallbacks: basicCallback[]
   pauseOnMouseMovement: boolean
   pauseOnScroll: boolean
   idleTimeoutMs: number
@@ -37,8 +39,8 @@ export default class BrowserInteractionTime {
   private checkCallbacksIntervalMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
-  private browserTabActiveCallbacks: Function[]
-  private browserTabInactiveCallbacks: Function[]
+  private browserTabActiveCallbacks: basicCallback[]
+  private browserTabInactiveCallbacks: basicCallback[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
 
@@ -46,12 +48,12 @@ export default class BrowserInteractionTime {
     timeIntervalEllapsedCallbacks,
     absoluteTimeEllapsedCallbacks,
     checkCallbacksIntervalMs,
-    browserTabInactiveCallbacks: userLeftCallbacks,
-    browserTabActiveCallbacks: userReturnCallbacks,
+    browserTabInactiveCallbacks,
+    browserTabActiveCallbacks,
     idleTimeoutMs
   }: Settings) {
-    this.browserTabActiveCallbacks = userReturnCallbacks
-    this.browserTabInactiveCallbacks = userLeftCallbacks
+    this.browserTabActiveCallbacks = browserTabActiveCallbacks
+    this.browserTabInactiveCallbacks = browserTabInactiveCallbacks
     this.times = []
     this.timeInMs = 0
     this.idle = false
@@ -68,19 +70,23 @@ export default class BrowserInteractionTime {
 
   private onBrowserTabInactive = () => {
     // if running pause timer
-    if (this.isRunning) {
+    if (this.isRunning()) {
       this.stopTimer()
     }
 
-    this.browserTabInactiveCallbacks.forEach(fn => fn())
+    this.browserTabInactiveCallbacks.forEach(fn =>
+      fn(this.getTimeInMilliseconds())
+    )
   }
 
   private onBrowserTabActive = () => {
     // if not running start timer
-    if (!this.isRunning) {
+    if (!this.isRunning()) {
       this.startTimer()
     }
-    this.browserTabActiveCallbacks.forEach(fn => fn())
+    this.browserTabActiveCallbacks.forEach(fn =>
+      fn(this.getTimeInMilliseconds())
+    )
   }
 
   private onTimePassed = () => {
@@ -88,7 +94,7 @@ export default class BrowserInteractionTime {
     this.absoluteTimeEllapsedCallbacks.forEach(
       ({ callback, pending, timeInMilliseconds }, index) => {
         if (!pending && timeInMilliseconds <= this.getTimeInMilliseconds()) {
-          callback()
+          callback(this.getTimeInMilliseconds())
           this.absoluteTimeEllapsedCallbacks[index].pending = true
         }
       }
@@ -97,7 +103,7 @@ export default class BrowserInteractionTime {
     this.timeIntervalEllapsedCallbacks.forEach(
       ({ callback, timeInMilliseconds, multiplier }, index) => {
         if (timeInMilliseconds <= this.getTimeInMilliseconds()) {
-          callback()
+          callback(this.getTimeInMilliseconds())
           this.timeIntervalEllapsedCallbacks[
             index
           ].timeInMilliseconds = multiplier(timeInMilliseconds)
@@ -158,7 +164,7 @@ export default class BrowserInteractionTime {
 
   public startTimer = () => {
     const last = this.times[this.times.length - 1]
-    if (last && last.start && last.stop === null) {
+    if (last && last.stop === null) {
       return
     }
     this.times.push({
@@ -189,12 +195,14 @@ export default class BrowserInteractionTime {
   }
 
   public addBrowserTabInactiveCallback = (
-    browserTabInactiveCallback: Function
+    browserTabInactiveCallback: basicCallback
   ) => {
     this.browserTabInactiveCallbacks.push(browserTabInactiveCallback)
   }
 
-  public addBrowserTabActiveCallback = (browserTabActiveCallback: Function) => {
+  public addBrowserTabActiveCallback = (
+    browserTabActiveCallback: basicCallback
+  ) => {
     this.browserTabActiveCallbacks.push(browserTabActiveCallback)
   }
 

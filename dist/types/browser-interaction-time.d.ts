@@ -1,7 +1,8 @@
 interface BaseTimeEllapsedCallbackData {
-    callback: () => void;
+    callback: (timeInMs: number) => void;
     timeInMilliseconds: number;
 }
+declare type basicCallback = (timeInMs: number) => void;
 export interface TimeIntervalEllapsedCallbackData extends BaseTimeEllapsedCallbackData {
     multiplier: (time: number) => number;
 }
@@ -11,8 +12,8 @@ export interface AbsoluteTimeEllapsedCallbackData extends BaseTimeEllapsedCallba
 interface Settings {
     timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[];
     absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[];
-    browserTabInactiveCallbacks: Function[];
-    browserTabActiveCallbacks: Function[];
+    browserTabInactiveCallbacks: basicCallback[];
+    browserTabActiveCallbacks: basicCallback[];
     pauseOnMouseMovement: boolean;
     pauseOnScroll: boolean;
     idleTimeoutMs: number;
@@ -32,7 +33,7 @@ export default class BrowserInteractionTime {
     private browserTabInactiveCallbacks;
     private timeIntervalEllapsedCallbacks;
     private absoluteTimeEllapsedCallbacks;
-    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks: userLeftCallbacks, browserTabActiveCallbacks: userReturnCallbacks, idleTimeoutMs }: Settings);
+    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, browserTabActiveCallbacks, idleTimeoutMs }: Settings);
     private onBrowserTabInactive;
     private onBrowserTabActive;
     private onTimePassed;
@@ -45,8 +46,8 @@ export default class BrowserInteractionTime {
     stopTimer: () => void;
     addTimeIntervalEllapsedCallback: (timeIntervalEllapsedCallback: TimeIntervalEllapsedCallbackData) => void;
     addAbsoluteTimeEllapsedCallback: (absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallbackData) => void;
-    addBrowserTabInactiveCallback: (browserTabInactiveCallback: Function) => void;
-    addBrowserTabActiveCallback: (browserTabActiveCallback: Function) => void;
+    addBrowserTabInactiveCallback: (browserTabInactiveCallback: basicCallback) => void;
+    addBrowserTabActiveCallback: (browserTabActiveCallback: basicCallback) => void;
     getTimeInMilliseconds: () => number;
     isRunning: () => boolean;
     reset: () => void;
