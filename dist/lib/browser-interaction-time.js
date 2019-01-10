@@ -9,6 +9,7 @@ var BrowserInteractionTime = /** @class */ (function () {
             if (_this.isRunning) {
                 _this.stopTimer();
             }
+            console.log('current time inactive is', _this.getTimeInMilliseconds());
             _this.browserTabInactiveCallbacks.forEach(function (fn) { return fn(); });
         };
         this.onBrowserTabActive = function () {
@@ -16,6 +17,7 @@ var BrowserInteractionTime = /** @class */ (function () {
             if (!_this.isRunning) {
                 _this.startTimer();
             }
+            console.log('current time active is', _this.getTimeInMilliseconds());
             _this.browserTabActiveCallbacks.forEach(function (fn) { return fn(); });
         };
         this.onTimePassed = function () {
@@ -40,7 +42,7 @@ var BrowserInteractionTime = /** @class */ (function () {
             _this.currentIdleTimeMs = 0;
         };
         this.visibilityChangeHandler = function (event) {
-            if (!document.hidden) {
+            if (document.hidden) {
                 _this.onBrowserTabInactive();
             }
             else {
@@ -86,6 +88,7 @@ var BrowserInteractionTime = /** @class */ (function () {
                 return;
             }
             _this.times[_this.times.length - 1].stop = new Date();
+            console.log(_this.times);
             _this.running = false;
         };
         this.addTimeIntervalEllapsedCallback = function (timeIntervalEllapsedCallback) {

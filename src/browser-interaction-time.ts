@@ -69,6 +69,7 @@ export default class BrowserInteractionTime {
     if (this.isRunning) {
       this.stopTimer()
     }
+    console.log('current time inactive is', this.getTimeInMilliseconds())
     this.browserTabInactiveCallbacks.forEach(fn => fn())
   }
 
@@ -77,6 +78,7 @@ export default class BrowserInteractionTime {
     if (!this.isRunning) {
       this.startTimer()
     }
+    console.log('current time active is', this.getTimeInMilliseconds())
     this.browserTabActiveCallbacks.forEach(fn => fn())
   }
 
@@ -109,7 +111,7 @@ export default class BrowserInteractionTime {
   }
 
   private visibilityChangeHandler = (event: Event) => {
-    if (!document.hidden) {
+    if (document.hidden) {
       this.onBrowserTabInactive()
     } else {
       this.onBrowserTabActive()
@@ -169,6 +171,7 @@ export default class BrowserInteractionTime {
       return
     }
     this.times[this.times.length - 1].stop = new Date()
+    console.log(this.times)
     this.running = false
   }
 
