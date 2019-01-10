@@ -18,13 +18,6 @@ interface Settings {
     idleTimeoutMs: number;
     checkCallbacksIntervalMs: number;
 }
-export interface DomApi {
-    addEventListener: (type: string, fn: Function, options?: any) => void;
-    removeEventListener: (type: string, fn: Function, options?: any) => void;
-    setInterval: (fn: Function, interval: number) => number;
-    clearInterval: (id: number) => void;
-    hidden: boolean;
-}
 export default class BrowserInteractionTime {
     private times;
     private intervalId?;
@@ -38,8 +31,7 @@ export default class BrowserInteractionTime {
     private browserTabInactiveCallbacks;
     private timeIntervalEllapsedCallbacks;
     private absoluteTimeEllapsedCallbacks;
-    private domApi;
-    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks: userLeftCallbacks, browserTabActiveCallbacks: userReturnCallbacks, idleTimeoutMs }: Settings, domApi: DomApi);
+    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks: userLeftCallbacks, browserTabActiveCallbacks: userReturnCallbacks, idleTimeoutMs }: Settings);
     private onBrowserTabInactive;
     private onBrowserTabActive;
     private onTimePassed;

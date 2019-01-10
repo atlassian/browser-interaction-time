@@ -5,7 +5,7 @@
 }(this, (function () { 'use strict';
 
   var BrowserInteractionTime = /** @class */ (function () {
-      function BrowserInteractionTime(_a, domApi) {
+      function BrowserInteractionTime(_a) {
           var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, userLeftCallbacks = _a.browserTabInactiveCallbacks, userReturnCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
           var _this = this;
           this.onBrowserTabInactive = function () {
@@ -52,25 +52,25 @@
               }
           };
           this.registerEventListeners = function () {
-              _this.domApi.addEventListener('visibilitychange', _this.visibilityChangeHandler, false);
-              _this.domApi.addEventListener('blur', _this.onBrowserTabInactive);
-              _this.domApi.addEventListener('focus', _this.onBrowserTabActive);
-              _this.domApi.addEventListener('scroll', _this.resetIdleCountdown);
-              _this.domApi.addEventListener('mousemove', _this.resetIdleCountdown);
-              _this.domApi.addEventListener('keyup', _this.resetIdleCountdown);
-              _this.domApi.addEventListener('touchstart', _this.resetIdleCountdown);
+              document.addEventListener('visibilitychange', _this.visibilityChangeHandler, false);
+              document.addEventListener('blur', _this.onBrowserTabInactive);
+              document.addEventListener('focus', _this.onBrowserTabActive);
+              document.addEventListener('scroll', _this.resetIdleCountdown);
+              document.addEventListener('mousemove', _this.resetIdleCountdown);
+              document.addEventListener('keyup', _this.resetIdleCountdown);
+              document.addEventListener('touchstart', _this.resetIdleCountdown);
           };
           this.unregisterEventListeners = function () {
-              _this.domApi.removeEventListener('visibilitychange', _this.visibilityChangeHandler, false);
-              _this.domApi.removeEventListener('blur', _this.onBrowserTabInactive);
-              _this.domApi.removeEventListener('focus', _this.onBrowserTabActive);
-              _this.domApi.removeEventListener('scroll', _this.resetIdleCountdown);
-              _this.domApi.removeEventListener('mousemove', _this.resetIdleCountdown);
-              _this.domApi.removeEventListener('keyup', _this.resetIdleCountdown);
-              _this.domApi.removeEventListener('touchstart', _this.resetIdleCountdown);
+              document.removeEventListener('visibilitychange', _this.visibilityChangeHandler, false);
+              document.removeEventListener('blur', _this.onBrowserTabInactive);
+              document.removeEventListener('focus', _this.onBrowserTabActive);
+              document.removeEventListener('scroll', _this.resetIdleCountdown);
+              document.removeEventListener('mousemove', _this.resetIdleCountdown);
+              document.removeEventListener('keyup', _this.resetIdleCountdown);
+              document.removeEventListener('touchstart', _this.resetIdleCountdown);
           };
           this.checkCallbacksOnInterval = function () {
-              _this.checkCallbackIntervalId = _this.domApi.setInterval(function () {
+              _this.checkCallbackIntervalId = window.setInterval(function () {
                   _this.onTimePassed();
               }, _this.checkCallbacksIntervalMs);
           };
@@ -126,7 +126,7 @@
           this.destroy = function () {
               _this.unregisterEventListeners();
               if (_this.checkCallbackIntervalId) {
-                  _this.domApi.clearInterval(_this.checkCallbackIntervalId);
+                  window.clearInterval(_this.checkCallbackIntervalId);
               }
           };
           this.browserTabActiveCallbacks = userReturnCallbacks;
@@ -139,7 +139,6 @@
           this.running = false;
           this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks;
           this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks;
-          this.domApi = domApi;
           this.registerEventListeners();
           this.startTimer();
           this.checkCallbacksOnInterval();

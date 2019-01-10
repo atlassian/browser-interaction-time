@@ -17,12 +17,5 @@ var bit = new BrowserInteractionTime(
     pauseOnScroll: false,
     idleTimeoutMs: 3000,
     checkCallbacksIntervalMs: 250
-  },
-  {
-    addEventListener: window.addEventListener.bind(window),
-    removeEventListener: window.removeEventListener.bind(window),
-    setInterval: setInterval.bind(window),
-    clearInterval: clearInterval.bind(window),
-    hidden: document.hidden
   }
 );

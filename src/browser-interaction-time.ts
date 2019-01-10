@@ -23,15 +23,6 @@ interface Settings {
   idleTimeoutMs: number
   checkCallbacksIntervalMs: number
 }
-
-export interface DomApi {
-  addEventListener: (type: string, fn: Function, options?: any) => void
-  removeEventListener: (type: string, fn: Function, options?: any) => void
-  setInterval: (fn: Function, interval: number) => number
-  clearInterval: (id: number) => void
-  hidden: boolean
-}
-
 interface Times {
   start: Date
   stop: Date | null
@@ -49,19 +40,15 @@ export default class BrowserInteractionTime {
   private browserTabInactiveCallbacks: Function[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
-  private domApi: DomApi
 
-  constructor(
-    {
-      timeIntervalEllapsedCallbacks,
-      absoluteTimeEllapsedCallbacks,
-      checkCallbacksIntervalMs,
-      browserTabInactiveCallbacks: userLeftCallbacks,
-      browserTabActiveCallbacks: userReturnCallbacks,
-      idleTimeoutMs
-    }: Settings,
-    domApi: DomApi
-  ) {
+  constructor({
+    timeIntervalEllapsedCallbacks,
+    absoluteTimeEllapsedCallbacks,
+    checkCallbacksIntervalMs,
+    browserTabInactiveCallbacks: userLeftCallbacks,
+    browserTabActiveCallbacks: userReturnCallbacks,
+    idleTimeoutMs
+  }: Settings) {
     this.browserTabActiveCallbacks = userReturnCallbacks
     this.browserTabInactiveCallbacks = userLeftCallbacks
     this.times = []
@@ -72,7 +59,6 @@ export default class BrowserInteractionTime {
     this.running = false
     this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks
     this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks
-    this.domApi = domApi
     this.registerEventListeners()
     this.startTimer()
     this.checkCallbacksOnInterval()
@@ -131,37 +117,37 @@ export default class BrowserInteractionTime {
   }
 
   private registerEventListeners = () => {
-    this.domApi.addEventListener(
+    document.addEventListener(
       'visibilitychange',
       this.visibilityChangeHandler,
       false
     )
 
-    this.domApi.addEventListener('blur', this.onBrowserTabInactive)
-    this.domApi.addEventListener('focus', this.onBrowserTabActive)
-    this.domApi.addEventListener('scroll', this.resetIdleCountdown)
-    this.domApi.addEventListener('mousemove', this.resetIdleCountdown)
-    this.domApi.addEventListener('keyup', this.resetIdleCountdown)
-    this.domApi.addEventListener('touchstart', this.resetIdleCountdown)
+    document.addEventListener('blur', this.onBrowserTabInactive)
+    document.addEventListener('focus', this.onBrowserTabActive)
+    document.addEventListener('scroll', this.resetIdleCountdown)
+    document.addEventListener('mousemove', this.resetIdleCountdown)
+    document.addEventListener('keyup', this.resetIdleCountdown)
+    document.addEventListener('touchstart', this.resetIdleCountdown)
   }
 
   private unregisterEventListeners = () => {
-    this.domApi.removeEventListener(
+    document.removeEventListener(
       'visibilitychange',
       this.visibilityChangeHandler,
       false
     )
 
-    this.domApi.removeEventListener('blur', this.onBrowserTabInactive)
-    this.domApi.removeEventListener('focus', this.onBrowserTabActive)
-    this.domApi.removeEventListener('scroll', this.resetIdleCountdown)
-    this.domApi.removeEventListener('mousemove', this.resetIdleCountdown)
-    this.domApi.removeEventListener('keyup', this.resetIdleCountdown)
-    this.domApi.removeEventListener('touchstart', this.resetIdleCountdown)
+    document.removeEventListener('blur', this.onBrowserTabInactive)
+    document.removeEventListener('focus', this.onBrowserTabActive)
+    document.removeEventListener('scroll', this.resetIdleCountdown)
+    document.removeEventListener('mousemove', this.resetIdleCountdown)
+    document.removeEventListener('keyup', this.resetIdleCountdown)
+    document.removeEventListener('touchstart', this.resetIdleCountdown)
   }
 
   private checkCallbacksOnInterval = () => {
-    this.checkCallbackIntervalId = this.domApi.setInterval(() => {
+    this.checkCallbackIntervalId = window.setInterval(() => {
       this.onTimePassed()
     }, this.checkCallbacksIntervalMs)
   }
@@ -235,7 +221,7 @@ export default class BrowserInteractionTime {
   public destroy = () => {
     this.unregisterEventListeners()
     if (this.checkCallbackIntervalId) {
-      this.domApi.clearInterval(this.checkCallbackIntervalId)
+      window.clearInterval(this.checkCallbackIntervalId)
     }
   }
 }
