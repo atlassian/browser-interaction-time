@@ -45,6 +45,7 @@
     }
   },
   "jest": {
+    "setupTestFrameworkScriptFile": "jest-extended",
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
@@ -122,5 +123,8 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
+  },
+  "dependencies": {
+    "jest-extended": "^0.11.0"
   }
 }

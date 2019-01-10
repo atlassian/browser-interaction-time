@@ -21,11 +21,11 @@ interface Settings {
   pauseOnMouseMovement: boolean
   pauseOnScroll: boolean
   idleTimeoutMs: number
-  checkCallbacksIntervalMs: number
+  checkCallbacksIntervalMs?: number
 }
 interface Times {
-  start: Date
-  stop: Date | null
+  start: number
+  stop: number | null
 }
 export default class BrowserInteractionTime {
   private times: Times[]
@@ -33,6 +33,7 @@ export default class BrowserInteractionTime {
   private running: boolean
   private idleTimeoutMs: number
   private currentIdleTimeMs: number
+  private timeInMs: number
   private checkCallbacksIntervalMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
@@ -52,9 +53,10 @@ export default class BrowserInteractionTime {
     this.browserTabActiveCallbacks = userReturnCallbacks
     this.browserTabInactiveCallbacks = userLeftCallbacks
     this.times = []
+    this.timeInMs = 0
     this.idle = false
     this.currentIdleTimeMs = 0
-    this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 250
+    this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100
     this.idleTimeoutMs = idleTimeoutMs || 30000 // 30s
     this.running = false
     this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks
@@ -69,7 +71,7 @@ export default class BrowserInteractionTime {
     if (this.isRunning) {
       this.stopTimer()
     }
-    console.log('current time inactive is', this.getTimeInMilliseconds())
+
     this.browserTabInactiveCallbacks.forEach(fn => fn())
   }
 
@@ -86,7 +88,7 @@ export default class BrowserInteractionTime {
     // check all callbacks time and if passed execute callback
     this.absoluteTimeEllapsedCallbacks.forEach(
       ({ callback, pending, timeInMilliseconds }, index) => {
-        if (pending && timeInMilliseconds <= this.getTimeInMilliseconds()) {
+        if (!pending && timeInMilliseconds <= this.getTimeInMilliseconds()) {
           callback()
           this.absoluteTimeEllapsedCallbacks[index].pending = true
         }
@@ -151,6 +153,7 @@ export default class BrowserInteractionTime {
   private checkCallbacksOnInterval = () => {
     this.checkCallbackIntervalId = window.setInterval(() => {
       this.onTimePassed()
+      this.timeInMs += this.checkCallbacksIntervalMs
     }, this.checkCallbacksIntervalMs)
   }
 
@@ -160,7 +163,7 @@ export default class BrowserInteractionTime {
       return
     }
     this.times.push({
-      start: new Date(),
+      start: this.timeInMs,
       stop: null
     })
     this.running = true
@@ -170,7 +173,7 @@ export default class BrowserInteractionTime {
     if (!this.times.length) {
       return
     }
-    this.times[this.times.length - 1].stop = new Date()
+    this.times[this.times.length - 1].stop = this.timeInMs
     this.running = false
   }
 
@@ -198,18 +201,13 @@ export default class BrowserInteractionTime {
 
   public getTimeInMilliseconds = (): number => {
     return this.times.reduce((acc, current) => {
-      if (current.stop && current.start) {
-        return acc + (current.stop.getTime() - current.start.getTime())
-      }
-
-      if (!current.stop && current.start) {
-        const now = new Date()
-
-        return acc + (now.getTime() - current.start.getTime())
+      if (current.stop) {
+        acc = acc + (current.stop - current.start)
+      } else {
+        acc = acc + (this.timeInMs - current.start)
       }
       return acc
     }, 0)
-    return 0
   }
 
   public isRunning = () => {

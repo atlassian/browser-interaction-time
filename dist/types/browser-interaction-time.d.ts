@@ -16,7 +16,7 @@ interface Settings {
     pauseOnMouseMovement: boolean;
     pauseOnScroll: boolean;
     idleTimeoutMs: number;
-    checkCallbacksIntervalMs: number;
+    checkCallbacksIntervalMs?: number;
 }
 export default class BrowserInteractionTime {
     private times;
@@ -24,6 +24,7 @@ export default class BrowserInteractionTime {
     private running;
     private idleTimeoutMs;
     private currentIdleTimeMs;
+    private timeInMs;
     private checkCallbacksIntervalMs;
     private idle;
     private checkCallbackIntervalId?;

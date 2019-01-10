@@ -13,7 +13,6 @@
               if (_this.isRunning) {
                   _this.stopTimer();
               }
-              console.log('current time inactive is', _this.getTimeInMilliseconds());
               _this.browserTabInactiveCallbacks.forEach(function (fn) { return fn(); });
           };
           this.onBrowserTabActive = function () {
@@ -28,7 +27,7 @@
               // check all callbacks time and if passed execute callback
               _this.absoluteTimeEllapsedCallbacks.forEach(function (_a, index) {
                   var callback = _a.callback, pending = _a.pending, timeInMilliseconds = _a.timeInMilliseconds;
-                  if (pending && timeInMilliseconds <= _this.getTimeInMilliseconds()) {
+                  if (!pending && timeInMilliseconds <= _this.getTimeInMilliseconds()) {
                       callback();
                       _this.absoluteTimeEllapsedCallbacks[index].pending = true;
                   }
@@ -74,6 +73,7 @@
           this.checkCallbacksOnInterval = function () {
               _this.checkCallbackIntervalId = window.setInterval(function () {
                   _this.onTimePassed();
+                  _this.timeInMs += _this.checkCallbacksIntervalMs;
               }, _this.checkCallbacksIntervalMs);
           };
           this.startTimer = function () {
@@ -82,7 +82,7 @@
                   return;
               }
               _this.times.push({
-                  start: new Date(),
+                  start: _this.timeInMs,
                   stop: null
               });
               _this.running = true;
@@ -91,7 +91,7 @@
               if (!_this.times.length) {
                   return;
               }
-              _this.times[_this.times.length - 1].stop = new Date();
+              _this.times[_this.times.length - 1].stop = _this.timeInMs;
               _this.running = false;
           };
           this.addTimeIntervalEllapsedCallback = function (timeIntervalEllapsedCallback) {
@@ -108,16 +108,14 @@
           };
           this.getTimeInMilliseconds = function () {
               return _this.times.reduce(function (acc, current) {
-                  if (current.stop && current.start) {
-                      return acc + (current.stop.getTime() - current.start.getTime());
+                  if (current.stop) {
+                      acc = acc + (current.stop - current.start);
                   }
-                  if (!current.stop && current.start) {
-                      var now = new Date();
-                      return acc + (now.getTime() - current.start.getTime());
+                  else {
+                      acc = acc + (_this.timeInMs - current.start);
                   }
                   return acc;
               }, 0);
-              return 0;
           };
           this.isRunning = function () {
               return _this.running;
@@ -134,9 +132,10 @@
           this.browserTabActiveCallbacks = userReturnCallbacks;
           this.browserTabInactiveCallbacks = userLeftCallbacks;
           this.times = [];
+          this.timeInMs = 0;
           this.idle = false;
           this.currentIdleTimeMs = 0;
-          this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 250;
+          this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100;
           this.idleTimeoutMs = idleTimeoutMs || 30000; // 30s
           this.running = false;
           this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks;
