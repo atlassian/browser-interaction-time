@@ -171,7 +171,6 @@ export default class BrowserInteractionTime {
       return
     }
     this.times[this.times.length - 1].stop = new Date()
-    console.log(this.times)
     this.running = false
   }
 

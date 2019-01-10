@@ -2,8 +2,6 @@ import BrowserInteractionTime, {
   TimeIntervalEllapsedCallbackData
 } from '../src/browser-interaction-time'
 
-const window = global
-
 /**
  * BrowserInteractionTime test
  */

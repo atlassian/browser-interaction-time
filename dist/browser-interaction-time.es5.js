@@ -86,7 +86,6 @@ var BrowserInteractionTime = /** @class */ (function () {
                 return;
             }
             _this.times[_this.times.length - 1].stop = new Date();
-            console.log(_this.times);
             _this.running = false;
         };
         this.addTimeIntervalEllapsedCallback = function (timeIntervalEllapsedCallback) {
