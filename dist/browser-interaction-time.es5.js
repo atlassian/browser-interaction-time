@@ -36,8 +36,18 @@ var BrowserInteractionTime = /** @class */ (function () {
                     _this.timeIntervalEllapsedCallbacks[index].timeInMilliseconds = multiplier(timeInMilliseconds);
                 }
             });
+            if (_this.currentIdleTimeMs >= _this.idleTimeoutMs && _this.isRunning()) {
+                _this.idle = true;
+                _this.stopTimer();
+            }
+            else {
+                _this.currentIdleTimeMs += _this.checkCallbacksIntervalMs;
+            }
         };
         this.resetIdleCountdown = function () {
+            if (_this.idle) {
+                _this.startTimer();
+            }
             _this.idle = false;
             _this.currentIdleTimeMs = 0;
         };

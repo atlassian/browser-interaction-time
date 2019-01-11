@@ -110,9 +110,19 @@ export default class BrowserInteractionTime {
         }
       }
     )
+
+    if (this.currentIdleTimeMs >= this.idleTimeoutMs && this.isRunning()) {
+      this.idle = true
+      this.stopTimer()
+    } else {
+      this.currentIdleTimeMs += this.checkCallbacksIntervalMs
+    }
   }
 
   private resetIdleCountdown = () => {
+    if (this.idle) {
+      this.startTimer()
+    }
     this.idle = false
     this.currentIdleTimeMs = 0
   }
