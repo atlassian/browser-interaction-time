@@ -54,7 +54,7 @@ describe('BrowserInteractionTime', () => {
         browserTabActiveCallbacks: [],
         pauseOnMouseMovement: false,
         pauseOnScroll: false,
-        idleTimeoutMs: 3000
+        idleTimeoutMs: 30000
       })
     })
 
@@ -113,7 +113,7 @@ describe('BrowserInteractionTime', () => {
         browserTabActiveCallbacks: [],
         pauseOnMouseMovement: false,
         pauseOnScroll: false,
-        idleTimeoutMs: 3000
+        idleTimeoutMs: 30000
       })
     })
 
