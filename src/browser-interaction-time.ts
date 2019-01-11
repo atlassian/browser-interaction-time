@@ -3,7 +3,7 @@ interface BaseTimeEllapsedCallbackData {
   timeInMilliseconds: number
 }
 
-type basicCallback = (timeInMs: number) => void
+type BasicCallback = (timeInMs: number) => void
 
 export interface TimeIntervalEllapsedCallbackData
   extends BaseTimeEllapsedCallbackData {
@@ -18,8 +18,8 @@ export interface AbsoluteTimeEllapsedCallbackData
 interface Settings {
   timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
-  browserTabInactiveCallbacks: basicCallback[]
-  browserTabActiveCallbacks: basicCallback[]
+  browserTabInactiveCallbacks: BasicCallback[]
+  browserTabActiveCallbacks: BasicCallback[]
   pauseOnMouseMovement: boolean
   pauseOnScroll: boolean
   idleTimeoutMs: number
@@ -39,8 +39,8 @@ export default class BrowserInteractionTime {
   private checkCallbacksIntervalMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
-  private browserTabActiveCallbacks: basicCallback[]
-  private browserTabInactiveCallbacks: basicCallback[]
+  private browserTabActiveCallbacks: BasicCallback[]
+  private browserTabInactiveCallbacks: BasicCallback[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
 
@@ -195,13 +195,13 @@ export default class BrowserInteractionTime {
   }
 
   public addBrowserTabInactiveCallback = (
-    browserTabInactiveCallback: basicCallback
+    browserTabInactiveCallback: BasicCallback
   ) => {
     this.browserTabInactiveCallbacks.push(browserTabInactiveCallback)
   }
 
   public addBrowserTabActiveCallback = (
-    browserTabActiveCallback: basicCallback
+    browserTabActiveCallback: BasicCallback
   ) => {
     this.browserTabActiveCallbacks.push(browserTabActiveCallback)
   }

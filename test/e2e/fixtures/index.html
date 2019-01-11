@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="" />
+  </head>
+  <body>
+    <h2 class="headline">⏰browser-interaction-time</h2>
+    <script src="../../../dist/browser-interaction-time.umd.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        var appendMessageToDom = text => time => {
+          const element = document.createElement('div')
+          element.className = text
+
+          element.innerHTML = `<span>${text}: ${time} ms</span>`
+          document.body.appendChild(element)
+        }
+
+        var bit = new window.browserInteractionTime({
+          timeIntervalEllapsedCallbacks: [
+            {
+              timeInMilliseconds: 1000,
+              callback: appendMessageToDom('timer-reached'),
+              multiplier: x => x * 2
+            }
+          ],
+          absoluteTimeEllapsedCallbacks: [],
+          browserTabInactiveCallbacks: [
+            appendMessageToDom('tab-became-inactive')
+          ],
+          browserTabActiveCallbacks: [appendMessageToDom('tab-became-active')],
+          pauseOnMouseMovement: false,
+          pauseOnScroll: false,
+          idleTimeoutMs: 3000
+        })
+      })
+    </script>
+  </body>
+</html>

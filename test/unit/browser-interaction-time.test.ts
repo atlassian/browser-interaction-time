@@ -1,7 +1,7 @@
 import BrowserInteractionTime, {
   TimeIntervalEllapsedCallbackData,
   AbsoluteTimeEllapsedCallbackData
-} from '../src/browser-interaction-time'
+} from '../../src/browser-interaction-time'
 import 'jest-extended'
 const exec = (testTimerFn: Function) => {
   setInterval(testTimerFn, 1000)

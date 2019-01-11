@@ -2,7 +2,7 @@ interface BaseTimeEllapsedCallbackData {
     callback: (timeInMs: number) => void;
     timeInMilliseconds: number;
 }
-declare type basicCallback = (timeInMs: number) => void;
+declare type BasicCallback = (timeInMs: number) => void;
 export interface TimeIntervalEllapsedCallbackData extends BaseTimeEllapsedCallbackData {
     multiplier: (time: number) => number;
 }
@@ -12,8 +12,8 @@ export interface AbsoluteTimeEllapsedCallbackData extends BaseTimeEllapsedCallba
 interface Settings {
     timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[];
     absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[];
-    browserTabInactiveCallbacks: basicCallback[];
-    browserTabActiveCallbacks: basicCallback[];
+    browserTabInactiveCallbacks: BasicCallback[];
+    browserTabActiveCallbacks: BasicCallback[];
     pauseOnMouseMovement: boolean;
     pauseOnScroll: boolean;
     idleTimeoutMs: number;
@@ -46,8 +46,8 @@ export default class BrowserInteractionTime {
     stopTimer: () => void;
     addTimeIntervalEllapsedCallback: (timeIntervalEllapsedCallback: TimeIntervalEllapsedCallbackData) => void;
     addAbsoluteTimeEllapsedCallback: (absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallbackData) => void;
-    addBrowserTabInactiveCallback: (browserTabInactiveCallback: basicCallback) => void;
-    addBrowserTabActiveCallback: (browserTabActiveCallback: basicCallback) => void;
+    addBrowserTabInactiveCallback: (browserTabInactiveCallback: BasicCallback) => void;
+    addBrowserTabActiveCallback: (browserTabActiveCallback: BasicCallback) => void;
     getTimeInMilliseconds: () => number;
     isRunning: () => boolean;
     reset: () => void;

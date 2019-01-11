@@ -8,8 +8,10 @@ notifications:
   email: false
 node_js:
   - node
+before_install:
+  - stty cols 80
 script:
-  - npm run test:prod && npm run build
+  - npm run test:prod && npm run testci:e2e && npm run build
 after_success:
   - npm run deploy-docs
   - npm run semantic-release
