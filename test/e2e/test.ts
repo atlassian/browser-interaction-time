@@ -9,14 +9,21 @@ test(`Test starts up successful`, async t => {
   await t.expect(headline).eql('⏰browser-interaction-time')
 })
 
-const timerReached = Selector('.timer-reached').with({ timeout: 20000 })
-
-test(`Timer is running`, async t => {
-  await t.wait(2000)
-  await t.expect(await timerReached.count).eql(1, { timeout: 20000 })
+const timerReachedInterval = Selector('.timer-reached-interval').with({
+  timeout: 20000
+})
+const timerReachedAbsolute = Selector('.timer-reached-absolute').with({
+  timeout: 20000
 })
 
-test(`Timer is running long`, async t => {
+test(`Timer is running 2s`, async t => {
+  await t.wait(2000)
+  await t.expect(await timerReachedInterval.count).eql(1, { timeout: 20000 })
+  await t.expect(await timerReachedAbsolute.count).eql(1, { timeout: 20000 })
+})
+
+test(`Timer is running 10s`, async t => {
   await t.wait(10000)
-  await t.expect(await timerReached.count).eql(4, { timeout: 20000 })
+  await t.expect(await timerReachedInterval.count).eql(4, { timeout: 20000 })
+  await t.expect(await timerReachedAbsolute.count).eql(2, { timeout: 20000 })
 })

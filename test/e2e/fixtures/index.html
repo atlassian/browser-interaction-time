@@ -30,11 +30,22 @@
           timeIntervalEllapsedCallbacks: [
             {
               timeInMilliseconds: 1000,
-              callback: appendMessageToDom('timer-reached'),
+              callback: appendMessageToDom('timer-reached-interval'),
               multiplier: x => x * 2
             }
           ],
-          absoluteTimeEllapsedCallbacks: [],
+          absoluteTimeEllapsedCallbacks: [
+            {
+              timeInMilliseconds: 1000,
+              callback: appendMessageToDom('timer-reached-absolute'),
+              pending: false
+            },
+            {
+              timeInMilliseconds: 9000,
+              callback: appendMessageToDom('timer-reached-absolute'),
+              pending: false
+            }
+          ],
           browserTabInactiveCallbacks: [
             appendMessageToDom('tab-became-inactive')
           ],
