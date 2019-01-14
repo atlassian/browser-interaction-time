@@ -30,7 +30,6 @@ interface Times {
 export default class BrowserInteractionTime {
   private running: boolean
   private times: Times[]
-  private intervalId?: number
   private timeInMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
