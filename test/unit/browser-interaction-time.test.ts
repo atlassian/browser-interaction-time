@@ -14,13 +14,7 @@ describe('BrowserInteractionTime', () => {
   describe('is instantiable', () => {
     let DefaultBrowserInteractionTime: BrowserInteractionTime
     beforeEach(() => {
-      DefaultBrowserInteractionTime = new BrowserInteractionTime({
-        timeIntervalEllapsedCallbacks: [],
-        absoluteTimeEllapsedCallbacks: [],
-        browserTabInactiveCallbacks: [],
-        browserTabActiveCallbacks: [],
-        idleTimeoutMs: 3000
-      })
+      DefaultBrowserInteractionTime = new BrowserInteractionTime({})
     })
 
     it('creates an instance', () => {
@@ -46,11 +40,7 @@ describe('BrowserInteractionTime', () => {
       }
 
       DefaultBrowserInteractionTime = new BrowserInteractionTime({
-        timeIntervalEllapsedCallbacks: [intervalCallback],
-        absoluteTimeEllapsedCallbacks: [],
-        browserTabInactiveCallbacks: [],
-        browserTabActiveCallbacks: [],
-        idleTimeoutMs: 30000
+        timeIntervalEllapsedCallbacks: [intervalCallback]
       })
     })
 
@@ -103,11 +93,7 @@ describe('BrowserInteractionTime', () => {
       ]
 
       DefaultBrowserInteractionTime = new BrowserInteractionTime({
-        timeIntervalEllapsedCallbacks: [],
-        absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks,
-        browserTabInactiveCallbacks: [],
-        browserTabActiveCallbacks: [],
-        idleTimeoutMs: 30000
+        absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks
       })
     })
 
@@ -155,14 +141,23 @@ describe('BrowserInteractionTime', () => {
       DefaultBrowserInteractionTime.stopTimer()
       DefaultBrowserInteractionTime.startTimer()
       DefaultBrowserInteractionTime.stopTimer()
+      jest.advanceTimersByTime(5100)
+
       expect(
         DefaultBrowserInteractionTime.getTimeInMilliseconds()
       ).toBeDefined()
+      expect(DefaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(
+        10200
+      )
 
       expect(DefaultBrowserInteractionTime.isRunning()).toBe(false)
     })
 
     it('.reset() returns 0 as timeInMilliseconds', () => {
+      jest.advanceTimersByTime(4000)
+      expect(DefaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(
+        4000
+      )
       DefaultBrowserInteractionTime.reset()
       expect(DefaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(0)
     })
