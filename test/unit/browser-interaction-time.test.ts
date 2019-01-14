@@ -19,8 +19,6 @@ describe('BrowserInteractionTime', () => {
         absoluteTimeEllapsedCallbacks: [],
         browserTabInactiveCallbacks: [],
         browserTabActiveCallbacks: [],
-        pauseOnMouseMovement: false,
-        pauseOnScroll: false,
         idleTimeoutMs: 3000
       })
     })
@@ -52,8 +50,6 @@ describe('BrowserInteractionTime', () => {
         absoluteTimeEllapsedCallbacks: [],
         browserTabInactiveCallbacks: [],
         browserTabActiveCallbacks: [],
-        pauseOnMouseMovement: false,
-        pauseOnScroll: false,
         idleTimeoutMs: 30000
       })
     })
@@ -111,8 +107,6 @@ describe('BrowserInteractionTime', () => {
         absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks,
         browserTabInactiveCallbacks: [],
         browserTabActiveCallbacks: [],
-        pauseOnMouseMovement: false,
-        pauseOnScroll: false,
         idleTimeoutMs: 30000
       })
     })

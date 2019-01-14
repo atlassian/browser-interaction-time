@@ -16,13 +16,11 @@ export interface AbsoluteTimeEllapsedCallbackData
 }
 
 interface Settings {
-  timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
-  absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
-  browserTabInactiveCallbacks: BasicCallback[]
-  browserTabActiveCallbacks: BasicCallback[]
-  pauseOnMouseMovement: boolean
-  pauseOnScroll: boolean
-  idleTimeoutMs: number
+  timeIntervalEllapsedCallbacks?: TimeIntervalEllapsedCallbackData[]
+  absoluteTimeEllapsedCallbacks?: AbsoluteTimeEllapsedCallbackData[]
+  browserTabInactiveCallbacks?: BasicCallback[]
+  browserTabActiveCallbacks?: BasicCallback[]
+  idleTimeoutMs?: number
   checkCallbacksIntervalMs?: number
 }
 interface Times {
@@ -30,15 +28,16 @@ interface Times {
   stop: number | null
 }
 export default class BrowserInteractionTime {
+  private running: boolean
   private times: Times[]
   private intervalId?: number
-  private running: boolean
-  private idleTimeoutMs: number
-  private currentIdleTimeMs: number
   private timeInMs: number
-  private checkCallbacksIntervalMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
+  private currentIdleTimeMs: number
+
+  private idleTimeoutMs: number
+  private checkCallbacksIntervalMs: number
   private browserTabActiveCallbacks: BasicCallback[]
   private browserTabInactiveCallbacks: BasicCallback[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
@@ -52,17 +51,19 @@ export default class BrowserInteractionTime {
     browserTabActiveCallbacks,
     idleTimeoutMs
   }: Settings) {
-    this.browserTabActiveCallbacks = browserTabActiveCallbacks
-    this.browserTabInactiveCallbacks = browserTabInactiveCallbacks
+    this.running = false
     this.times = []
-    this.timeInMs = 0
     this.idle = false
+    this.timeInMs = 0
     this.currentIdleTimeMs = 0
+
+    this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
+    this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || []
     this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100
     this.idleTimeoutMs = idleTimeoutMs || 30000 // 30s
-    this.running = false
-    this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks
-    this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks
+    this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || []
+    this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || []
+
     this.registerEventListeners()
     this.startTimer()
     this.checkCallbacksOnInterval()

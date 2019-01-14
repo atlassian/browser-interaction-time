@@ -142,17 +142,17 @@
                   window.clearInterval(_this.checkCallbackIntervalId);
               }
           };
-          this.browserTabActiveCallbacks = browserTabActiveCallbacks;
-          this.browserTabInactiveCallbacks = browserTabInactiveCallbacks;
+          this.running = false;
           this.times = [];
-          this.timeInMs = 0;
           this.idle = false;
+          this.timeInMs = 0;
           this.currentIdleTimeMs = 0;
+          this.browserTabActiveCallbacks = browserTabActiveCallbacks || [];
+          this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || [];
           this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100;
           this.idleTimeoutMs = idleTimeoutMs || 30000; // 30s
-          this.running = false;
-          this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks;
-          this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks;
+          this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || [];
+          this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
           this.registerEventListeners();
           this.startTimer();
           this.checkCallbacksOnInterval();

@@ -10,25 +10,23 @@ export interface AbsoluteTimeEllapsedCallbackData extends BaseTimeEllapsedCallba
     pending: boolean;
 }
 interface Settings {
-    timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[];
-    absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[];
-    browserTabInactiveCallbacks: BasicCallback[];
-    browserTabActiveCallbacks: BasicCallback[];
-    pauseOnMouseMovement: boolean;
-    pauseOnScroll: boolean;
-    idleTimeoutMs: number;
+    timeIntervalEllapsedCallbacks?: TimeIntervalEllapsedCallbackData[];
+    absoluteTimeEllapsedCallbacks?: AbsoluteTimeEllapsedCallbackData[];
+    browserTabInactiveCallbacks?: BasicCallback[];
+    browserTabActiveCallbacks?: BasicCallback[];
+    idleTimeoutMs?: number;
     checkCallbacksIntervalMs?: number;
 }
 export default class BrowserInteractionTime {
+    private running;
     private times;
     private intervalId?;
-    private running;
-    private idleTimeoutMs;
-    private currentIdleTimeMs;
     private timeInMs;
-    private checkCallbacksIntervalMs;
     private idle;
     private checkCallbackIntervalId?;
+    private currentIdleTimeMs;
+    private idleTimeoutMs;
+    private checkCallbacksIntervalMs;
     private browserTabActiveCallbacks;
     private browserTabInactiveCallbacks;
     private timeIntervalEllapsedCallbacks;

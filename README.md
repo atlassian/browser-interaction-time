@@ -35,17 +35,8 @@ const browserInteractionTime = new BrowserInteractiontime({
         absoluteTimeEllapsedCallbacks: [],
         userLeftCallbacks: [],
         userReturnCallbacks: [],
-        pauseOnMouseMovement: false,
-        pauseOnScroll: false,
         idleTimeoutMs: 3000,
         checkCallbacksIntervalMs: 250
-    },
-    {
-        addEventListener: window.addEventListener,
-        removeEventListener: window.addEventListener,
-        setInterval: window.setInterval,
-        clearInterval: window.clearInterval,
-        hidden: document.hidden
     }
 })
 ```
