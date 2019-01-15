@@ -82,7 +82,6 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.checkCallbacksOnInterval = function () {
             _this.checkCallbackIntervalId = window.setInterval(function () {
                 _this.onTimePassed();
-                _this.timeInMs += _this.checkCallbacksIntervalMs;
             }, _this.checkCallbacksIntervalMs);
         };
         this.startTimer = function () {
@@ -91,7 +90,7 @@ var BrowserInteractionTime = /** @class */ (function () {
                 return;
             }
             _this.times.push({
-                start: _this.timeInMs,
+                start: Date.now(),
                 stop: null
             });
             _this.running = true;
@@ -100,7 +99,7 @@ var BrowserInteractionTime = /** @class */ (function () {
             if (!_this.times.length) {
                 return;
             }
-            _this.times[_this.times.length - 1].stop = _this.timeInMs;
+            _this.times[_this.times.length - 1].stop = Date.now();
             _this.running = false;
         };
         this.addTimeIntervalEllapsedCallback = function (timeIntervalEllapsedCallback) {
@@ -121,7 +120,7 @@ var BrowserInteractionTime = /** @class */ (function () {
                     acc = acc + (current.stop - current.start);
                 }
                 else {
-                    acc = acc + (_this.timeInMs - current.start);
+                    acc = acc + (Date.now() - current.start);
                 }
                 return acc;
             }, 0);
@@ -141,7 +140,6 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.running = false;
         this.times = [];
         this.idle = false;
-        this.timeInMs = 0;
         this.currentIdleTimeMs = 0;
         this.browserTabActiveCallbacks = browserTabActiveCallbacks || [];
         this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || [];

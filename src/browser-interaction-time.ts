@@ -30,7 +30,6 @@ interface Times {
 export default class BrowserInteractionTime {
   private running: boolean
   private times: Times[]
-  private timeInMs: number
   private idle: boolean
   private checkCallbackIntervalId?: number
   private currentIdleTimeMs: number
@@ -53,7 +52,6 @@ export default class BrowserInteractionTime {
     this.running = false
     this.times = []
     this.idle = false
-    this.timeInMs = 0
     this.currentIdleTimeMs = 0
 
     this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
@@ -168,7 +166,6 @@ export default class BrowserInteractionTime {
   private checkCallbacksOnInterval = () => {
     this.checkCallbackIntervalId = window.setInterval(() => {
       this.onTimePassed()
-      this.timeInMs += this.checkCallbacksIntervalMs
     }, this.checkCallbacksIntervalMs)
   }
 
@@ -178,7 +175,7 @@ export default class BrowserInteractionTime {
       return
     }
     this.times.push({
-      start: this.timeInMs,
+      start: Date.now(),
       stop: null
     })
     this.running = true
@@ -188,7 +185,7 @@ export default class BrowserInteractionTime {
     if (!this.times.length) {
       return
     }
-    this.times[this.times.length - 1].stop = this.timeInMs
+    this.times[this.times.length - 1].stop = Date.now()
     this.running = false
   }
 
@@ -221,7 +218,7 @@ export default class BrowserInteractionTime {
       if (current.stop) {
         acc = acc + (current.stop - current.start)
       } else {
-        acc = acc + (this.timeInMs - current.start)
+        acc = acc + (Date.now() - current.start)
       }
       return acc
     }, 0)

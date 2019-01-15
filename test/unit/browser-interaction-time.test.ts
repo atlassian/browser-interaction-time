@@ -75,10 +75,12 @@ describe('BrowserInteractionTime', () => {
   describe('absolute time callbacks are called when time is reached', () => {
     let defaultBrowserInteractionTime: BrowserInteractionTime
     let absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
+    let dateNowMock: any
 
     beforeEach(() => {
       jest.useFakeTimers()
-
+      dateNowMock = jest.spyOn(Date, 'now')
+      Date.now = dateNowMock.mockImplementation(() => 0)
       absoluteTimeEllapsedCallbacks = [
         {
           timeInMilliseconds: 2000,
@@ -122,12 +124,15 @@ describe('BrowserInteractionTime', () => {
       expect(absoluteTimeEllapsedCallbacks[0].callback).not.toBeCalled()
       expect(absoluteTimeEllapsedCallbacks[1].callback).not.toBeCalled()
 
+      Date.now = dateNowMock.mockImplementation(() => 3000)
       jest.advanceTimersByTime(3000)
       expect(defaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(
         3000
       )
       expect(absoluteTimeEllapsedCallbacks[0].callback).toBeCalled()
       expect(absoluteTimeEllapsedCallbacks[1].callback).not.toBeCalled()
+
+      Date.now = dateNowMock.mockImplementation(() => 7000)
 
       jest.advanceTimersByTime(4000)
       expect(defaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(
@@ -141,6 +146,8 @@ describe('BrowserInteractionTime', () => {
       defaultBrowserInteractionTime.stopTimer()
       defaultBrowserInteractionTime.startTimer()
       defaultBrowserInteractionTime.stopTimer()
+      Date.now = dateNowMock.mockImplementation(() => 5100)
+
       jest.advanceTimersByTime(5100)
 
       expect(
@@ -154,6 +161,8 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('.reset() returns 0 as timeInMilliseconds', () => {
+      Date.now = dateNowMock.mockImplementation(() => 4000)
+
       jest.advanceTimersByTime(4000)
       expect(defaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(
         4000

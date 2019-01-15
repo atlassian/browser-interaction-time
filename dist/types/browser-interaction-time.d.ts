@@ -20,7 +20,6 @@ interface Settings {
 export default class BrowserInteractionTime {
     private running;
     private times;
-    private timeInMs;
     private idle;
     private checkCallbackIntervalId?;
     private currentIdleTimeMs;
