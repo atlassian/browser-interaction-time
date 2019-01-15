@@ -66,18 +66,19 @@
               }
           };
           this.registerEventListeners = function () {
-              document.addEventListener('visibilitychange', _this.visibilityChangeHandler, false);
-              document.addEventListener('blur', _this.onBrowserTabInactive);
-              document.addEventListener('focus', _this.onBrowserTabActive);
-              document.addEventListener('scroll', _this.resetIdleCountdown);
-              document.addEventListener('mousemove', _this.resetIdleCountdown);
-              document.addEventListener('keyup', _this.resetIdleCountdown);
-              document.addEventListener('touchstart', _this.resetIdleCountdown);
+              document.addEventListener('visibilitychange', _this.visibilityChangeHandler);
+              var eventlistenerOptions = { passive: true };
+              window.addEventListener('blur', _this.onBrowserTabInactive);
+              window.addEventListener('focus', _this.onBrowserTabActive);
+              document.addEventListener('scroll', _this.resetIdleCountdown, eventlistenerOptions);
+              document.addEventListener('mousemove', _this.resetIdleCountdown, eventlistenerOptions);
+              document.addEventListener('keyup', _this.resetIdleCountdown, eventlistenerOptions);
+              document.addEventListener('touchstart', _this.resetIdleCountdown, eventlistenerOptions);
           };
           this.unregisterEventListeners = function () {
-              document.removeEventListener('visibilitychange', _this.visibilityChangeHandler, false);
-              document.removeEventListener('blur', _this.onBrowserTabInactive);
-              document.removeEventListener('focus', _this.onBrowserTabActive);
+              document.removeEventListener('visibilitychange', _this.visibilityChangeHandler);
+              window.removeEventListener('blur', _this.onBrowserTabInactive);
+              window.removeEventListener('focus', _this.onBrowserTabActive);
               document.removeEventListener('scroll', _this.resetIdleCountdown);
               document.removeEventListener('mousemove', _this.resetIdleCountdown);
               document.removeEventListener('keyup', _this.resetIdleCountdown);

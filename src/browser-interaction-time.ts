@@ -134,29 +134,42 @@ export default class BrowserInteractionTime {
   }
 
   private registerEventListeners = () => {
-    document.addEventListener(
-      'visibilitychange',
-      this.visibilityChangeHandler,
-      false
-    )
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler)
 
-    document.addEventListener('blur', this.onBrowserTabInactive)
-    document.addEventListener('focus', this.onBrowserTabActive)
-    document.addEventListener('scroll', this.resetIdleCountdown)
-    document.addEventListener('mousemove', this.resetIdleCountdown)
-    document.addEventListener('keyup', this.resetIdleCountdown)
-    document.addEventListener('touchstart', this.resetIdleCountdown)
+    const eventlistenerOptions = { passive: true }
+
+    window.addEventListener('blur', this.onBrowserTabInactive)
+    window.addEventListener('focus', this.onBrowserTabActive)
+    document.addEventListener(
+      'scroll',
+      this.resetIdleCountdown,
+      eventlistenerOptions
+    )
+    document.addEventListener(
+      'mousemove',
+      this.resetIdleCountdown,
+      eventlistenerOptions
+    )
+    document.addEventListener(
+      'keyup',
+      this.resetIdleCountdown,
+      eventlistenerOptions
+    )
+    document.addEventListener(
+      'touchstart',
+      this.resetIdleCountdown,
+      eventlistenerOptions
+    )
   }
 
   private unregisterEventListeners = () => {
     document.removeEventListener(
       'visibilitychange',
-      this.visibilityChangeHandler,
-      false
+      this.visibilityChangeHandler
     )
 
-    document.removeEventListener('blur', this.onBrowserTabInactive)
-    document.removeEventListener('focus', this.onBrowserTabActive)
+    window.removeEventListener('blur', this.onBrowserTabInactive)
+    window.removeEventListener('focus', this.onBrowserTabActive)
     document.removeEventListener('scroll', this.resetIdleCountdown)
     document.removeEventListener('mousemove', this.resetIdleCountdown)
     document.removeEventListener('keyup', this.resetIdleCountdown)
