@@ -3,6 +3,7 @@ import BrowserInteractionTime, {
   AbsoluteTimeEllapsedCallbackData
 } from '../../src/browser-interaction-time'
 import 'jest-extended'
+
 const exec = (testTimerFn: Function) => {
   setInterval(testTimerFn, 1000)
 }
@@ -13,14 +14,28 @@ const exec = (testTimerFn: Function) => {
 describe('BrowserInteractionTime', () => {
   describe('is instantiable', () => {
     let defaultBrowserInteractionTime: BrowserInteractionTime
+    let documentAddEventListenerSpy: jest.SpyInstance
+    let windowAddEventListenerSpy: jest.SpyInstance
+
     beforeEach(() => {
+      documentAddEventListenerSpy = jest.spyOn(document, 'addEventListener')
+      windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener')
       defaultBrowserInteractionTime = new BrowserInteractionTime({})
+    })
+
+    afterEach(() => {
+      jest.restoreAllMocks()
     })
 
     it('creates an instance', () => {
       expect(defaultBrowserInteractionTime).toBeInstanceOf(
         BrowserInteractionTime
       )
+    })
+
+    it('registers event listeners', () => {
+      expect(windowAddEventListenerSpy).toBeCalledTimes(2)
+      expect(documentAddEventListenerSpy).toBeCalledTimes(5)
     })
   })
 
