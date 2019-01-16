@@ -1,4 +1,8 @@
-# ⏰ browser-interaction-time
+<p align="left">
+  <img src="./bit.png" width="200" />
+</p>
+
+# browser-interaction-time
 
 [![license](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/atlassian/browser-interaction-time/master/LICENSE)
 [![Build Status](https://travis-ci.org/atlassian/browser-interaction-time.svg?branch=master)](https://travis-ci.org/atlassian/browser-interaction-time)
