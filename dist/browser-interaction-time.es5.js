@@ -147,7 +147,6 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || [];
         this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
         this.registerEventListeners();
-        this.startTimer();
         this.checkCallbacksOnInterval();
     }
     return BrowserInteractionTime;

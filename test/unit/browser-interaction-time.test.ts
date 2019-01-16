@@ -22,10 +22,6 @@ describe('BrowserInteractionTime', () => {
         BrowserInteractionTime
       )
     })
-
-    it('starts a timer', () => {
-      expect(defaultBrowserInteractionTime.isRunning).toBeTruthy()
-    })
   })
 
   describe('API', () => {
@@ -104,6 +100,7 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('no callback is called', () => {
+      defaultBrowserInteractionTime.startTimer()
       expect(defaultBrowserInteractionTime.isRunning()).toBe(true)
       absoluteTimeEllapsedCallbacks.forEach(callbackObject => {
         expect(callbackObject.callback).not.toBeCalled()
@@ -119,6 +116,7 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('absoluteTimeEllapsedCallbacks are called on time', () => {
+      defaultBrowserInteractionTime.startTimer()
       expect(defaultBrowserInteractionTime.isRunning()).toBe(true)
       expect(absoluteTimeEllapsedCallbacks[0].callback).toBeFunction()
       expect(absoluteTimeEllapsedCallbacks[0].callback).not.toBeCalled()
@@ -161,6 +159,8 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('.reset() returns 0 as timeInMilliseconds', () => {
+      defaultBrowserInteractionTime.startTimer()
+
       Date.now = dateNowMock.mockImplementation(() => 4000)
 
       jest.advanceTimersByTime(4000)

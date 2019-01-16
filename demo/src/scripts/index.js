@@ -23,4 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     pauseOnScroll: false,
     idleTimeoutMs: 30000
   });
+
+  bit.startTimer();
 });

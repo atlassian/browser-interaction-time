@@ -62,7 +62,6 @@ export default class BrowserInteractionTime {
     this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || []
 
     this.registerEventListeners()
-    this.startTimer()
     this.checkCallbacksOnInterval()
   }
 
