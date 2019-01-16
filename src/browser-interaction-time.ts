@@ -62,7 +62,6 @@ export default class BrowserInteractionTime {
     this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || []
 
     this.registerEventListeners()
-    this.checkCallbacksOnInterval()
   }
 
   private onBrowserTabInactive = () => {
@@ -182,6 +181,9 @@ export default class BrowserInteractionTime {
   }
 
   public startTimer = () => {
+    if (!this.checkCallbackIntervalId) {
+      this.checkCallbacksOnInterval()
+    }
     const last = this.times[this.times.length - 1]
     if (last && last.stop === null) {
       return
