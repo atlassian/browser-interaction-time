@@ -50,12 +50,9 @@
             appendMessageToDom('tab-became-inactive')
           ],
           browserTabActiveCallbacks: [appendMessageToDom('tab-became-active')],
-          idleTimeoutMs: 30000
+          idleTimeoutMs: 3000
         })
         bit.startTimer()
-
-        window.dispatchEvent(new Event('blur'))
-        window.dispatchEvent(new Event('focus'))
       })
     </script>
   </body>
