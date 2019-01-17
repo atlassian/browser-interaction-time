@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     browserTabActiveCallbacks: [appendMessageToDom('Tab became active')],
     pauseOnMouseMovement: false,
     pauseOnScroll: false,
-    idleTimeoutMs: 30000
+    idleTimeoutMs: 3000
   });
 
   bit.startTimer();
