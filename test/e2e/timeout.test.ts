@@ -1,6 +1,6 @@
 import { Selector } from 'testcafe'
 
-fixture`Default`.page`./fixtures/timeout.html`
+fixture`Timeout`.page`./fixtures/timeout.html`
 
 test(`Test starts up successful`, async t => {
   const headline = Selector('.headline').innerText
