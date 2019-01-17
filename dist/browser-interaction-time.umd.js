@@ -13,7 +13,6 @@
               if (_this.isRunning()) {
                   _this.stopTimer();
               }
-              console.log('onBrowserTabInactive', event);
               _this.browserTabInactiveCallbacks.forEach(function (fn) {
                   return fn(_this.getTimeInMilliseconds());
               });
@@ -23,7 +22,6 @@
               if (!_this.isRunning()) {
                   _this.startTimer();
               }
-              console.log('onBrowserTabActive', event);
               _this.browserTabActiveCallbacks.forEach(function (fn) {
                   return fn(_this.getTimeInMilliseconds());
               });

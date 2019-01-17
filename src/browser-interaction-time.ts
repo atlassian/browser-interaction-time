@@ -69,7 +69,6 @@ export default class BrowserInteractionTime {
     if (this.isRunning()) {
       this.stopTimer()
     }
-    console.log('onBrowserTabInactive', event)
 
     this.browserTabInactiveCallbacks.forEach(fn =>
       fn(this.getTimeInMilliseconds())
@@ -81,7 +80,7 @@ export default class BrowserInteractionTime {
     if (!this.isRunning()) {
       this.startTimer()
     }
-    console.log('onBrowserTabActive', event)
+
     this.browserTabActiveCallbacks.forEach(fn =>
       fn(this.getTimeInMilliseconds())
     )
