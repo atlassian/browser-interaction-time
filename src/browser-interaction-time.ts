@@ -64,22 +64,24 @@ export default class BrowserInteractionTime {
     this.registerEventListeners()
   }
 
-  private onBrowserTabInactive = () => {
+  private onBrowserTabInactive = (event: Event) => {
     // if running pause timer
     if (this.isRunning()) {
       this.stopTimer()
     }
+    console.log('onBrowserTabInactive', event)
 
     this.browserTabInactiveCallbacks.forEach(fn =>
       fn(this.getTimeInMilliseconds())
     )
   }
 
-  private onBrowserTabActive = () => {
+  private onBrowserTabActive = (event: Event) => {
     // if not running start timer
     if (!this.isRunning()) {
       this.startTimer()
     }
+    console.log('onBrowserTabActive', event)
     this.browserTabActiveCallbacks.forEach(fn =>
       fn(this.getTimeInMilliseconds())
     )
@@ -125,9 +127,9 @@ export default class BrowserInteractionTime {
 
   private visibilityChangeHandler = (event: Event) => {
     if (document.hidden) {
-      this.onBrowserTabInactive()
+      this.onBrowserTabInactive(event)
     } else {
-      this.onBrowserTabActive()
+      this.onBrowserTabActive(event)
     }
   }
 

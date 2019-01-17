@@ -4,20 +4,22 @@ var BrowserInteractionTime = /** @class */ (function () {
     function BrowserInteractionTime(_a) {
         var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
         var _this = this;
-        this.onBrowserTabInactive = function () {
+        this.onBrowserTabInactive = function (event) {
             // if running pause timer
             if (_this.isRunning()) {
                 _this.stopTimer();
             }
+            console.log('onBrowserTabInactive', event);
             _this.browserTabInactiveCallbacks.forEach(function (fn) {
                 return fn(_this.getTimeInMilliseconds());
             });
         };
-        this.onBrowserTabActive = function () {
+        this.onBrowserTabActive = function (event) {
             // if not running start timer
             if (!_this.isRunning()) {
                 _this.startTimer();
             }
+            console.log('onBrowserTabActive', event);
             _this.browserTabActiveCallbacks.forEach(function (fn) {
                 return fn(_this.getTimeInMilliseconds());
             });
@@ -55,10 +57,10 @@ var BrowserInteractionTime = /** @class */ (function () {
         };
         this.visibilityChangeHandler = function (event) {
             if (document.hidden) {
-                _this.onBrowserTabInactive();
+                _this.onBrowserTabInactive(event);
             }
             else {
-                _this.onBrowserTabActive();
+                _this.onBrowserTabActive(event);
             }
         };
         this.registerEventListeners = function () {
@@ -86,6 +88,9 @@ var BrowserInteractionTime = /** @class */ (function () {
             }, _this.checkCallbacksIntervalMs);
         };
         this.startTimer = function () {
+            if (!_this.checkCallbackIntervalId) {
+                _this.checkCallbacksOnInterval();
+            }
             var last = _this.times[_this.times.length - 1];
             if (last && last.stop === null) {
                 return;
@@ -149,7 +154,6 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || [];
         this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
         this.registerEventListeners();
-        this.checkCallbacksOnInterval();
     }
     return BrowserInteractionTime;
 }());
