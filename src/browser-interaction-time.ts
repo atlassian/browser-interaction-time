@@ -175,7 +175,7 @@ export default class BrowserInteractionTime {
       return
     }
     this.times.push({
-      start: Date.now(),
+      start: performance.now(),
       stop: null
     })
     this.running = true
@@ -185,7 +185,7 @@ export default class BrowserInteractionTime {
     if (!this.times.length) {
       return
     }
-    this.times[this.times.length - 1].stop = Date.now()
+    this.times[this.times.length - 1].stop = performance.now()
     this.running = false
   }
 
@@ -218,7 +218,7 @@ export default class BrowserInteractionTime {
       if (current.stop) {
         acc = acc + (current.stop - current.start)
       } else {
-        acc = acc + (Date.now() - current.start)
+        acc = acc + (performance.now() - current.start)
       }
       return acc
     }, 0)
