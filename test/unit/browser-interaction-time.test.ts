@@ -34,8 +34,8 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('registers event listeners', () => {
-      expect(windowAddEventListenerSpy).toBeCalledTimes(2)
-      expect(documentAddEventListenerSpy).toBeCalledTimes(5)
+      expect(windowAddEventListenerSpy).toBeCalledTimes(3)
+      expect(documentAddEventListenerSpy).toBeCalledTimes(3)
     })
   })
 

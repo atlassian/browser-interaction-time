@@ -125,22 +125,12 @@ export default class BrowserInteractionTime {
     this.currentIdleTimeMs = 0
   }
 
-  private visibilityChangeHandler = (event: Event) => {
-    if (document.hidden) {
-      this.onBrowserTabInactive(event)
-    } else {
-      this.onBrowserTabActive(event)
-    }
-  }
-
   private registerEventListeners = () => {
-    document.addEventListener('visibilitychange', this.visibilityChangeHandler)
-
     const eventlistenerOptions = { passive: true }
 
     window.addEventListener('blur', this.onBrowserTabInactive)
     window.addEventListener('focus', this.onBrowserTabActive)
-    document.addEventListener(
+    window.addEventListener(
       'scroll',
       this.resetIdleCountdown,
       eventlistenerOptions
@@ -163,14 +153,9 @@ export default class BrowserInteractionTime {
   }
 
   private unregisterEventListeners = () => {
-    document.removeEventListener(
-      'visibilitychange',
-      this.visibilityChangeHandler
-    )
-
     window.removeEventListener('blur', this.onBrowserTabInactive)
     window.removeEventListener('focus', this.onBrowserTabActive)
-    document.removeEventListener('scroll', this.resetIdleCountdown)
+    window.removeEventListener('scroll', this.resetIdleCountdown)
     document.removeEventListener('mousemove', this.resetIdleCountdown)
     document.removeEventListener('keyup', this.resetIdleCountdown)
     document.removeEventListener('touchstart', this.resetIdleCountdown)

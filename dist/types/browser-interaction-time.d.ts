@@ -34,7 +34,6 @@ export default class BrowserInteractionTime {
     private onBrowserTabActive;
     private onTimePassed;
     private resetIdleCountdown;
-    private visibilityChangeHandler;
     private registerEventListeners;
     private unregisterEventListeners;
     private checkCallbacksOnInterval;

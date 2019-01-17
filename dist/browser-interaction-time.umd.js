@@ -59,29 +59,19 @@
               _this.idle = false;
               _this.currentIdleTimeMs = 0;
           };
-          this.visibilityChangeHandler = function (event) {
-              if (document.hidden) {
-                  _this.onBrowserTabInactive(event);
-              }
-              else {
-                  _this.onBrowserTabActive(event);
-              }
-          };
           this.registerEventListeners = function () {
-              document.addEventListener('visibilitychange', _this.visibilityChangeHandler);
               var eventlistenerOptions = { passive: true };
               window.addEventListener('blur', _this.onBrowserTabInactive);
               window.addEventListener('focus', _this.onBrowserTabActive);
-              document.addEventListener('scroll', _this.resetIdleCountdown, eventlistenerOptions);
+              window.addEventListener('scroll', _this.resetIdleCountdown, eventlistenerOptions);
               document.addEventListener('mousemove', _this.resetIdleCountdown, eventlistenerOptions);
               document.addEventListener('keyup', _this.resetIdleCountdown, eventlistenerOptions);
               document.addEventListener('touchstart', _this.resetIdleCountdown, eventlistenerOptions);
           };
           this.unregisterEventListeners = function () {
-              document.removeEventListener('visibilitychange', _this.visibilityChangeHandler);
               window.removeEventListener('blur', _this.onBrowserTabInactive);
               window.removeEventListener('focus', _this.onBrowserTabActive);
-              document.removeEventListener('scroll', _this.resetIdleCountdown);
+              window.removeEventListener('scroll', _this.resetIdleCountdown);
               document.removeEventListener('mousemove', _this.resetIdleCountdown);
               document.removeEventListener('keyup', _this.resetIdleCountdown);
               document.removeEventListener('touchstart', _this.resetIdleCountdown);
