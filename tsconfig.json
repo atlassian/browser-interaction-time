@@ -16,6 +16,6 @@
     // THIS IS NEEDED:
     "skipLibCheck": true
   },
-  "include": ["test/e2e", "test/unit", "src"],
+  "include": ["e2e", "unit", "src"],
   "exclude": ["node_modules"]
 }

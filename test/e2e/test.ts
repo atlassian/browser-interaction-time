@@ -47,3 +47,16 @@ test(`focus and blur callbacks are called`, async t => {
   await t.expect(await blurSelector.count).eql(1, { timeout: 20000 })
   await t.expect(await focusSelector.count).eql(1, { timeout: 20000 })
 })
+
+fixture`Timeout`.page`./fixtures/timeout.html`
+
+test(`Test starts up successful`, async t => {
+  const headline = Selector('.headline').innerText
+  await t.expect(headline).eql('⏰browser-interaction-time')
+})
+
+test(`with idleTimeoutMs set to 3000ms only callbacks until 3000ms should be called`, async t => {
+  await t.wait(10000)
+  await t.expect(await timerReachedAbsolute.count).eql(1, { timeout: 20000 })
+  await t.expect(await timerReachedInterval.count).eql(2, { timeout: 20000 })
+})
