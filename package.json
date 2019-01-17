@@ -28,7 +28,7 @@
     "test:prod": "npm run lint && npm run test -- --no-cache",
     "test:e2e": "testcafe chrome test/e2e",
     "test-all:e2e": "testcafe all test/e2e",
-    "testci:e2e": "testcafe \"saucelabs:Chrome@beta:Windows 10\" test/e2e/test.ts",
+    "testci:e2e": "testcafe \"saucelabs:Chrome@beta:Windows 10\" test/e2e",
     "testdev:e2e": "testcafe-live chrome test/e2e",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
