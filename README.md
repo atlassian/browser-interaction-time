@@ -1,5 +1,5 @@
 <p align="left">
-  <img src="./bit.png" width="200" />
+  <img src="https://github.com/atlassian/browser-interaction-time/blob/master/bit.png" width="200" />
 </p>
 
 # browser-interaction-time
