@@ -34,14 +34,12 @@ import BrowserInteractionTime from 'browser-interaction-time/dist/lib/'
 import BrowserInteractionTime from 'browser-interaction-time'
 
 const browserInteractionTime = new BrowserInteractiontime({
-    {
-        timeIntervalEllapsedCallbacks: [],
-        absoluteTimeEllapsedCallbacks: [],
-        userLeftCallbacks: [],
-        userReturnCallbacks: [],
-        idleTimeoutMs: 3000,
-        checkCallbacksIntervalMs: 250
-    }
+    timeIntervalEllapsedCallbacks: [],
+    absoluteTimeEllapsedCallbacks: [],
+    userLeftCallbacks: [],
+    userReturnCallbacks: [],
+    idleTimeoutMs: 3000,
+    checkCallbacksIntervalMs: 250
 })
 ```
 
