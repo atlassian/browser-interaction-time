@@ -1,8 +1,8 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global.browserInteractionTime = factory());
-}(this, (function () { 'use strict';
+  (global = global || self, global.browserInteractionTime = factory());
+}(this, function () { 'use strict';
 
   var BrowserInteractionTime = /** @class */ (function () {
       function BrowserInteractionTime(_a) {
@@ -152,5 +152,5 @@
 
   return BrowserInteractionTime;
 
-})));
+}));
 //# sourceMappingURL=browser-interaction-time.umd.js.map
