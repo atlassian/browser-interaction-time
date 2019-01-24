@@ -118,7 +118,10 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.14.2",
-    "typescript": "^3.0.3"
+    "typescript": "^3.0.3",
+    "jest-extended": "^0.11.0",
+    "testcafe": "^0.23.3",
+    "testcafe-live": "^0.1.4"
   },
   "publishConfig": {
     "access": "public"
@@ -128,10 +131,5 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
-  },
-  "dependencies": {
-    "jest-extended": "^0.11.0",
-    "testcafe": "^0.23.3",
-    "testcafe-live": "^0.1.4"
   }
 }
