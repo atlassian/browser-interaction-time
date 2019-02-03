@@ -24,7 +24,7 @@ const focusSelector = Selector('.tab-became-active').with({
 
 test(`interval callbacks are called when running 1.5s`, async t => {
   await t.wait(1500)
-  await t.expect(await timerReachedAbsolute.count).eql(1, { timeout: 20000 })
+  await t.expect(await timerReachedInterval.count).eql(1, { timeout: 20000 })
 })
 
 test(`absolute callbacks are called when running 1.5s`, async t => {
