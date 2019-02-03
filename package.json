@@ -28,7 +28,7 @@
     "test:prod": "npm run lint && npm run test -- --no-cache",
     "test:e2e": "testcafe chrome test/e2e",
     "test-all:e2e": "testcafe all test/e2e",
-    "testci:e2e": "testcafe 'browserstack:chrome@71.0:Windows 10' test/e2e/test.ts",
+    "testci:e2e": "testcafe 'browserstack:chrome@71.0:Windows 10,browserstack:firefox@64.0:OS X Mojave,browserstack:edge@18.0:Windows 10,browserstack:ie@11.0:Windows 10,browserstack:safari@12.0:OS X Mojave' test/e2e/test.ts",
     "testdev:e2e": "testcafe-live chrome test/e2e",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
