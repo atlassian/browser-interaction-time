@@ -28,7 +28,7 @@
     "test:prod": "npm run lint && npm run test -- --no-cache",
     "test:e2e": "testcafe chrome test/e2e",
     "test-all:e2e": "testcafe all test/e2e",
-    "testci:e2e": "testcafe \"saucelabs:Chrome@beta:Windows 10\" test/e2e",
+    "testci:e2e": "testcafe 'browserstack:firefox@64.0:Windows 8.1' test/e2e/test.ts",
     "testdev:e2e": "testcafe-live chrome test/e2e",
     "deploy-docs": "ts-node tools/gh-pages-publish",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
@@ -97,6 +97,7 @@
     "husky": "^1.0.1",
     "jest": "^23.6.0",
     "jest-config": "^23.6.0",
+    "jest-extended": "^0.11.0",
     "lint-staged": "^8.0.0",
     "lodash.camelcase": "^4.3.0",
     "prettier": "^1.14.3",
@@ -110,7 +111,9 @@
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.19.2",
     "semantic-release": "^15.13.2",
-    "testcafe-browser-provider-saucelabs": "^1.6.0",
+    "testcafe": "^0.23.3",
+    "testcafe-browser-provider-browserstack": "^1.5.0",
+    "testcafe-live": "^0.1.4",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^23.10.2",
     "ts-node": "^8.0.1",
@@ -118,10 +121,7 @@
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
     "typedoc": "^0.14.2",
-    "typescript": "^3.0.3",
-    "jest-extended": "^0.11.0",
-    "testcafe": "^0.23.3",
-    "testcafe-live": "^0.1.4"
+    "typescript": "^3.0.3"
   },
   "publishConfig": {
     "access": "public"
