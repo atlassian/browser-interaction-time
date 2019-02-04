@@ -27,6 +27,14 @@ interface Times {
   start: number
   stop: number | null
 }
+
+interface Mark {
+  time: number
+}
+
+interface Marks {
+  [key: string]: Mark[]
+}
 export default class BrowserInteractionTime {
   private running: boolean
   private times: Times[]
@@ -40,6 +48,7 @@ export default class BrowserInteractionTime {
   private browserTabInactiveCallbacks: BasicCallback[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
+  private marks: Marks
 
   constructor({
     timeIntervalEllapsedCallbacks,
@@ -53,6 +62,7 @@ export default class BrowserInteractionTime {
     this.times = []
     this.idle = false
     this.currentIdleTimeMs = 0
+    this.marks = {}
 
     this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
     this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || []
@@ -237,5 +247,27 @@ export default class BrowserInteractionTime {
     if (this.checkCallbackIntervalId) {
       window.clearInterval(this.checkCallbackIntervalId)
     }
+  }
+
+  public mark(key: string) {
+    this.marks[key].push({ time: this.getTimeInMilliseconds() })
+  }
+
+  public getMarks(key: string) {
+    if (this.marks[key].length < 1) {
+      return
+    }
+
+    return this.marks[key]
+  }
+
+  public measure(key: string) {
+    const marks = this.marks[key]
+
+    if (marks.length > 2) {
+      return
+    }
+
+    return marks[marks.length - 1].time - marks[0].time
   }
 }
