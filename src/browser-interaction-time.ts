@@ -250,6 +250,9 @@ export default class BrowserInteractionTime {
   }
 
   public mark(key: string) {
+    if (!this.marks[key]) {
+      this.marks[key] = []
+    }
     this.marks[key].push({ time: this.getTimeInMilliseconds() })
   }
 
