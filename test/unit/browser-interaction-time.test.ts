@@ -100,6 +100,22 @@ describe('BrowserInteractionTime', () => {
         { time: 5000 }
       ])
     })
+
+    it('.measure() calculates time between the last marks of the same name', () => {
+      defaultBrowserInteractionTime.startTimer()
+      performanceNowMock.mockImplementation(() => 5000)
+      defaultBrowserInteractionTime.mark('mark')
+      performanceNowMock.mockImplementation(() => 10000)
+      defaultBrowserInteractionTime.mark('other-mark')
+      defaultBrowserInteractionTime.measure('measure-a', 'mark', 'other-mark')
+      expect(defaultBrowserInteractionTime.getMeasures('measure-a')).toEqual([
+        {
+          name: 'measure-a',
+          startTime: 5000,
+          duration: 5000
+        }
+      ])
+    })
   })
 
   describe('absolute time callbacks are called when time is reached', () => {
