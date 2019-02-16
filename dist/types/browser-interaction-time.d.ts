@@ -17,6 +17,14 @@ interface Settings {
     idleTimeoutMs?: number;
     checkCallbacksIntervalMs?: number;
 }
+interface Mark {
+    time: number;
+}
+interface Measure {
+    name: string;
+    startTime: number;
+    duration: number;
+}
 export default class BrowserInteractionTime {
     private running;
     private times;
@@ -29,6 +37,8 @@ export default class BrowserInteractionTime {
     private browserTabInactiveCallbacks;
     private timeIntervalEllapsedCallbacks;
     private absoluteTimeEllapsedCallbacks;
+    private marks;
+    private measures;
     constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, browserTabActiveCallbacks, idleTimeoutMs }: Settings);
     private onBrowserTabInactive;
     private onBrowserTabActive;
@@ -47,5 +57,9 @@ export default class BrowserInteractionTime {
     isRunning: () => boolean;
     reset: () => void;
     destroy: () => void;
+    mark(key: string): void;
+    getMarks(name: string): Mark[] | undefined;
+    measure(name: string, startMarkName: string, endMarkName: string): void;
+    getMeasures(name: string): Measure[] | undefined;
 }
 export {};
