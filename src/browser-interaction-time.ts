@@ -294,7 +294,7 @@ export default class BrowserInteractionTime {
   }
 
   public getMeasures(name: string) {
-    if (this.measures[name].length < 1) {
+    if (!this.measures[name] && this.measures[name].length < 1) {
       return
     }
 
