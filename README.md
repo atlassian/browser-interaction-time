@@ -95,6 +95,31 @@ const callback = () => console.log('some callback')
 browserInteractionTime.addBrowserTabActiveCallback(callback)
 ```
 
+### Set a mark on modified timeline (see https://developer.mozilla.org/en-US/docs/Web/API/Performance/mark)
+
+```js
+browserInteractionTime.mark('a-mark')
+browserInteractionTime.mark('b-mark')
+```
+
+### Get marks by name (see https://developer.mozilla.org/en-US/docs/Web/API/Performance/mark)
+
+```js
+browserInteractionTime.getMarks('a-mark')
+```
+
+### Set measure time between 2 marks (see https://developer.mozilla.org/en-US/docs/Web/API/Performance/measure)
+
+```js
+browserInteractionTime.measure('a-measure', 'a-mark', 'b-mark')
+```
+
+### Get measure by name
+
+```js
+browserInteractionTime.getMeasures('a-measure') // Array of measures with name
+```
+
 ### Get Time in Milliseconds
 
 ```js
