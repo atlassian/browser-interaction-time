@@ -12,6 +12,19 @@ const exec = (testTimerFn: Function) => {
  * BrowserInteractionTime test
  */
 describe('BrowserInteractionTime', () => {
+  let performanceNowMock: any
+
+  beforeEach(() => {
+    jest.useFakeTimers()
+    performanceNowMock = jest.spyOn(performance, 'now')
+    performance.now = performanceNowMock.mockImplementation(() => 0)
+  })
+
+  afterEach(() => {
+    jest.restoreAllMocks()
+    jest.clearAllTimers()
+  })
+
   describe('is instantiable', () => {
     let defaultBrowserInteractionTime: BrowserInteractionTime
     let documentAddEventListenerSpy: jest.SpyInstance
@@ -21,10 +34,6 @@ describe('BrowserInteractionTime', () => {
       documentAddEventListenerSpy = jest.spyOn(document, 'addEventListener')
       windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener')
       defaultBrowserInteractionTime = new BrowserInteractionTime({})
-    })
-
-    afterEach(() => {
-      jest.restoreAllMocks()
     })
 
     it('creates an instance', () => {
@@ -81,17 +90,39 @@ describe('BrowserInteractionTime', () => {
       defaultBrowserInteractionTime.reset()
       expect(defaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(0)
     })
+
+    it('.mark() adds mark to marks collection', () => {
+      defaultBrowserInteractionTime.startTimer()
+      performanceNowMock.mockImplementation(() => 5000)
+      defaultBrowserInteractionTime.mark('mark')
+      expect(defaultBrowserInteractionTime.getMarks('mark')).toHaveLength(1)
+      expect(defaultBrowserInteractionTime.getMarks('mark')).toEqual([
+        { time: 5000 }
+      ])
+    })
+
+    it('.measure() calculates time between the last marks of the same name', () => {
+      defaultBrowserInteractionTime.startTimer()
+      performanceNowMock.mockImplementation(() => 5000)
+      defaultBrowserInteractionTime.mark('mark')
+      performanceNowMock.mockImplementation(() => 10000)
+      defaultBrowserInteractionTime.mark('other-mark')
+      defaultBrowserInteractionTime.measure('measure-a', 'mark', 'other-mark')
+      expect(defaultBrowserInteractionTime.getMeasures('measure-a')).toEqual([
+        {
+          name: 'measure-a',
+          startTime: 5000,
+          duration: 5000
+        }
+      ])
+    })
   })
 
   describe('absolute time callbacks are called when time is reached', () => {
     let defaultBrowserInteractionTime: BrowserInteractionTime
     let absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
-    let performanceNowMock: any
 
     beforeEach(() => {
-      jest.useFakeTimers()
-      performanceNowMock = jest.spyOn(performance, 'now')
-      performance.now = performanceNowMock.mockImplementation(() => 0)
       absoluteTimeEllapsedCallbacks = [
         {
           timeInMilliseconds: 2000,
@@ -108,10 +139,6 @@ describe('BrowserInteractionTime', () => {
       defaultBrowserInteractionTime = new BrowserInteractionTime({
         absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks
       })
-    })
-
-    afterEach(() => {
-      jest.clearAllTimers()
     })
 
     it('no callback is called', () => {

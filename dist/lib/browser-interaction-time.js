@@ -135,6 +135,8 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.times = [];
         this.idle = false;
         this.currentIdleTimeMs = 0;
+        this.marks = {};
+        this.measures = {};
         this.browserTabActiveCallbacks = browserTabActiveCallbacks || [];
         this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || [];
         this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100;
@@ -143,6 +145,38 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
         this.registerEventListeners();
     }
+    BrowserInteractionTime.prototype.mark = function (key) {
+        if (!this.marks[key]) {
+            this.marks[key] = [];
+        }
+        this.marks[key].push({ time: this.getTimeInMilliseconds() });
+    };
+    BrowserInteractionTime.prototype.getMarks = function (name) {
+        if (this.marks[name].length < 1) {
+            return;
+        }
+        return this.marks[name];
+    };
+    BrowserInteractionTime.prototype.measure = function (name, startMarkName, endMarkName) {
+        var startMarks = this.marks[startMarkName];
+        var startMark = startMarks[startMarks.length - 1];
+        var endMarks = this.marks[endMarkName];
+        var endMark = endMarks[endMarks.length - 1];
+        if (!this.measures[name]) {
+            this.measures[name] = [];
+        }
+        this.measures[name].push({
+            name: name,
+            startTime: startMark.time,
+            duration: endMark.time - startMark.time
+        });
+    };
+    BrowserInteractionTime.prototype.getMeasures = function (name) {
+        if (!this.measures[name] && this.measures[name].length < 1) {
+            return;
+        }
+        return this.measures[name];
+    };
     return BrowserInteractionTime;
 }());
 exports.default = BrowserInteractionTime;

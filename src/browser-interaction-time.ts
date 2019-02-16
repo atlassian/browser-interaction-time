@@ -27,6 +27,25 @@ interface Times {
   start: number
   stop: number | null
 }
+
+interface Mark {
+  time: number
+}
+
+interface Marks {
+  [key: string]: Mark[]
+}
+
+interface Measure {
+  name: string
+  startTime: number
+  duration: number
+}
+
+interface Measures {
+  [key: string]: Measure[]
+}
+
 export default class BrowserInteractionTime {
   private running: boolean
   private times: Times[]
@@ -40,6 +59,8 @@ export default class BrowserInteractionTime {
   private browserTabInactiveCallbacks: BasicCallback[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
+  private marks: Marks
+  private measures: Measures
 
   constructor({
     timeIntervalEllapsedCallbacks,
@@ -53,7 +74,8 @@ export default class BrowserInteractionTime {
     this.times = []
     this.idle = false
     this.currentIdleTimeMs = 0
-
+    this.marks = {}
+    this.measures = {}
     this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
     this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || []
     this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100
@@ -237,5 +259,45 @@ export default class BrowserInteractionTime {
     if (this.checkCallbackIntervalId) {
       window.clearInterval(this.checkCallbackIntervalId)
     }
+  }
+
+  public mark(key: string) {
+    if (!this.marks[key]) {
+      this.marks[key] = []
+    }
+    this.marks[key].push({ time: this.getTimeInMilliseconds() })
+  }
+
+  public getMarks(name: string) {
+    if (this.marks[name].length < 1) {
+      return
+    }
+
+    return this.marks[name]
+  }
+
+  public measure(name: string, startMarkName: string, endMarkName: string) {
+    const startMarks = this.marks[startMarkName]
+    const startMark = startMarks[startMarks.length - 1]
+    const endMarks = this.marks[endMarkName]
+    const endMark = endMarks[endMarks.length - 1]
+
+    if (!this.measures[name]) {
+      this.measures[name] = []
+    }
+
+    this.measures[name].push({
+      name,
+      startTime: startMark.time,
+      duration: endMark.time - startMark.time
+    })
+  }
+
+  public getMeasures(name: string) {
+    if (!this.measures[name] && this.measures[name].length < 1) {
+      return
+    }
+
+    return this.measures[name]
   }
 }

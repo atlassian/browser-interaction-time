@@ -22,6 +22,10 @@ const focusSelector = Selector('.tab-became-active').with({
   timeout: 20000
 })
 
+const measureSelector = Selector('.a-measure').with({
+  timeout: 20000
+})
+
 test(`interval callbacks are called when running 1.5s`, async t => {
   await t.wait(1500)
   await t.expect(await timerReachedInterval.count).eql(1, { timeout: 20000 })
@@ -46,6 +50,11 @@ test(`focus and blur callbacks are called`, async t => {
   await t.wait(1500)
   await t.expect(await blurSelector.count).eql(1, { timeout: 20000 })
   await t.expect(await focusSelector.count).eql(1, { timeout: 20000 })
+})
+
+test(`mark and measure works as expected`, async t => {
+  await t.wait(1500)
+  await t.expect(await measureSelector.count).eql(1, { timeout: 20000 })
 })
 
 fixture`Timeout`.page`./fixtures/timeout.html`
