@@ -12,7 +12,7 @@
 [![](https://data.jsdelivr.com/v1/package/npm/browser-interaction-time/badge?style=rounded)](https://www.jsdelivr.com/package/npm/browser-interaction-time)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/atlassian/browser-interaction-time.svg)](https://greenkeeper.io/)
 
-[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=MHBVVW5jR216ZVlxSjFSRkVzWEpYbVVxWmlOV09vU3hMUnc0SUFoWWZIQT0tLWpMNFFnRTVsVW1PS0UydUJ2Y0NFcnc9PQ==--b941abc4fdf74e5670e646c5fa5c314a1787d916)](https://www.browserstack.com/automate/public-build/MHBVVW5jR216ZVlxSjFSRkVzWEpYbVVxWmlOV09vU3hMUnc0SUFoWWZIQT0tLWpMNFFnRTVsVW1PS0UydUJ2Y0NFcnc9PQ==--b941abc4fdf74e5670e646c5fa5c314a1787d916)
+[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=aVA5MGZZa3k5YVBZUEZQM3J3ZmQzaFpzanpuWnVYVlpSbi9CQVltRUpxVT0tLTlsYWswQnJ1Vk9qNjdkLzNFSGk0YWc9PQ==--ee207b05cd4f22463529cf2a6bebc4d0268a6129)](https://www.browserstack.com/automate/public-build/aVA5MGZZa3k5YVBZUEZQM3J3ZmQzaFpzanpuWnVYVlpSbi9CQVltRUpxVT0tLTlsYWswQnJ1Vk9qNjdkLzNFSGk0YWc9PQ==--ee207b05cd4f22463529cf2a6bebc4d0268a6129)
 
 browser-interaction-time lets you track the time a user is active on your webpage while ignoring time spent on a different tab or with a minimized window. It also ignores the time spent while the user is idle on a web page meaning after a certain amount of time (idleTimeoutMs) without any user interactions (scroll, mousemovement etc) the time will also stop until the next user interaction.
 
