@@ -8,6 +8,8 @@ const exec = (testTimerFn: Function) => {
   setInterval(testTimerFn, 1000)
 }
 
+jest.mock('lodash/throttle', () => ({ default: jest.fn(), __esModule: true }))
+
 /**
  * BrowserInteractionTime test
  */
@@ -43,8 +45,8 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('registers event listeners', () => {
-      expect(windowAddEventListenerSpy).toBeCalledTimes(3)
-      expect(documentAddEventListenerSpy).toBeCalledTimes(3)
+      expect(windowAddEventListenerSpy).toBeCalledTimes(4)
+      expect(documentAddEventListenerSpy).toBeCalledTimes(6)
     })
   })
 

@@ -1,5 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var throttle_1 = require("lodash/throttle");
+var windowIdleEvents = ['scroll', 'resize'];
+var documentIdleEvents = [
+    'mousemove',
+    'keyup',
+    'keydown',
+    'touchstart',
+    'click',
+    'contextmenu'
+];
 var BrowserInteractionTime = /** @class */ (function () {
     function BrowserInteractionTime(_a) {
         var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
@@ -46,7 +56,8 @@ var BrowserInteractionTime = /** @class */ (function () {
                 _this.currentIdleTimeMs += _this.checkCallbacksIntervalMs;
             }
         };
-        this.resetIdleCountdown = function () {
+        this.resetIdleTime = function () {
+            console.log('called resetIdleTime');
             if (_this.idle) {
                 _this.startTimer();
             }
@@ -55,20 +66,28 @@ var BrowserInteractionTime = /** @class */ (function () {
         };
         this.registerEventListeners = function () {
             var eventlistenerOptions = { passive: true };
-            window.addEventListener('blur', _this.onBrowserTabInactive);
-            window.addEventListener('focus', _this.onBrowserTabActive);
-            window.addEventListener('scroll', _this.resetIdleCountdown, eventlistenerOptions);
-            document.addEventListener('mousemove', _this.resetIdleCountdown, eventlistenerOptions);
-            document.addEventListener('keyup', _this.resetIdleCountdown, eventlistenerOptions);
-            document.addEventListener('touchstart', _this.resetIdleCountdown, eventlistenerOptions);
+            window.addEventListener('blur', _this.onBrowserTabInactive, eventlistenerOptions);
+            window.addEventListener('focus', _this.onBrowserTabActive, eventlistenerOptions);
+            var throttleResetIdle = throttle_1.default(_this.resetIdleTime, 2000, {
+                leading: true,
+                trailing: false
+            });
+            windowIdleEvents.forEach(function (event) {
+                window.addEventListener(event, function () { return throttleResetIdle(); }, eventlistenerOptions);
+            });
+            documentIdleEvents.forEach(function (event) {
+                return document.addEventListener(event, function () { return throttleResetIdle(); }, eventlistenerOptions);
+            });
         };
         this.unregisterEventListeners = function () {
             window.removeEventListener('blur', _this.onBrowserTabInactive);
             window.removeEventListener('focus', _this.onBrowserTabActive);
-            window.removeEventListener('scroll', _this.resetIdleCountdown);
-            document.removeEventListener('mousemove', _this.resetIdleCountdown);
-            document.removeEventListener('keyup', _this.resetIdleCountdown);
-            document.removeEventListener('touchstart', _this.resetIdleCountdown);
+            windowIdleEvents.forEach(function (event) {
+                return window.removeEventListener(event, _this.resetIdleTime);
+            });
+            documentIdleEvents.forEach(function (event) {
+                return document.removeEventListener(event, _this.resetIdleTime);
+            });
         };
         this.checkCallbacksOnInterval = function () {
             _this.checkCallbackIntervalId = window.setInterval(function () {

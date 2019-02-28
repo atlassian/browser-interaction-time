@@ -1,3 +1,5 @@
+import throttle from 'lodash/throttle'
+
 interface BaseTimeEllapsedCallbackData {
   callback: (timeInMs: number) => void
   timeInMilliseconds: number
@@ -45,6 +47,15 @@ interface Measure {
 interface Measures {
   [key: string]: Measure[]
 }
+const windowIdleEvents = ['scroll', 'resize']
+const documentIdleEvents = [
+  'mousemove',
+  'keyup',
+  'keydown',
+  'touchstart',
+  'click',
+  'contextmenu'
+]
 
 export default class BrowserInteractionTime {
   private running: boolean
@@ -138,7 +149,8 @@ export default class BrowserInteractionTime {
     }
   }
 
-  private resetIdleCountdown = () => {
+  private resetIdleTime = () => {
+    console.log('called resetIdleTime')
     if (this.idle) {
       this.startTimer()
     }
@@ -149,37 +161,48 @@ export default class BrowserInteractionTime {
   private registerEventListeners = () => {
     const eventlistenerOptions = { passive: true }
 
-    window.addEventListener('blur', this.onBrowserTabInactive)
-    window.addEventListener('focus', this.onBrowserTabActive)
     window.addEventListener(
-      'scroll',
-      this.resetIdleCountdown,
+      'blur',
+      this.onBrowserTabInactive,
       eventlistenerOptions
     )
-    document.addEventListener(
-      'mousemove',
-      this.resetIdleCountdown,
+    window.addEventListener(
+      'focus',
+      this.onBrowserTabActive,
       eventlistenerOptions
     )
-    document.addEventListener(
-      'keyup',
-      this.resetIdleCountdown,
-      eventlistenerOptions
-    )
-    document.addEventListener(
-      'touchstart',
-      this.resetIdleCountdown,
-      eventlistenerOptions
+
+    const throttleResetIdle = throttle(this.resetIdleTime, 2000, {
+      leading: true,
+      trailing: false
+    })
+    windowIdleEvents.forEach(event => {
+      window.addEventListener(
+        event,
+        () => throttleResetIdle(),
+        eventlistenerOptions
+      )
+    })
+
+    documentIdleEvents.forEach(event =>
+      document.addEventListener(
+        event,
+        () => throttleResetIdle(),
+        eventlistenerOptions
+      )
     )
   }
 
   private unregisterEventListeners = () => {
     window.removeEventListener('blur', this.onBrowserTabInactive)
     window.removeEventListener('focus', this.onBrowserTabActive)
-    window.removeEventListener('scroll', this.resetIdleCountdown)
-    document.removeEventListener('mousemove', this.resetIdleCountdown)
-    document.removeEventListener('keyup', this.resetIdleCountdown)
-    document.removeEventListener('touchstart', this.resetIdleCountdown)
+    windowIdleEvents.forEach(event =>
+      window.removeEventListener(event, this.resetIdleTime)
+    )
+
+    documentIdleEvents.forEach(event =>
+      document.removeEventListener(event, this.resetIdleTime)
+    )
   }
 
   private checkCallbacksOnInterval = () => {
