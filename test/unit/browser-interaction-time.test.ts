@@ -129,12 +129,12 @@ describe('BrowserInteractionTime', () => {
         {
           timeInMilliseconds: 2000,
           callback: jest.fn(),
-          pending: false
+          pending: true
         },
         {
           timeInMilliseconds: 6000,
           callback: jest.fn(),
-          pending: false
+          pending: true
         }
       ]
 

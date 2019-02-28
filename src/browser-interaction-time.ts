@@ -90,7 +90,7 @@ export default class BrowserInteractionTime {
     this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
     this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || []
     this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100
-    this.idleTimeoutMs = idleTimeoutMs || 30000 // 30s
+    this.idleTimeoutMs = idleTimeoutMs || 3000 // 3s
     this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || []
     this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || []
 
@@ -123,9 +123,9 @@ export default class BrowserInteractionTime {
     // check all callbacks time and if passed execute callback
     this.absoluteTimeEllapsedCallbacks.forEach(
       ({ callback, pending, timeInMilliseconds }, index) => {
-        if (!pending && timeInMilliseconds <= this.getTimeInMilliseconds()) {
+        if (pending && timeInMilliseconds <= this.getTimeInMilliseconds()) {
           callback(this.getTimeInMilliseconds())
-          this.absoluteTimeEllapsedCallbacks[index].pending = true
+          this.absoluteTimeEllapsedCallbacks[index].pending = false
         }
       }
     )
@@ -159,36 +159,36 @@ export default class BrowserInteractionTime {
   }
 
   private registerEventListeners = () => {
-    const eventlistenerOptions = { passive: true }
+    const eventListenerOptions = { passive: true }
 
     window.addEventListener(
       'blur',
       this.onBrowserTabInactive,
-      eventlistenerOptions
+      eventListenerOptions
     )
     window.addEventListener(
       'focus',
       this.onBrowserTabActive,
-      eventlistenerOptions
+      eventListenerOptions
     )
 
-    const throttleResetIdle = throttle(this.resetIdleTime, 2000, {
+    const throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
       leading: true,
       trailing: false
     })
     windowIdleEvents.forEach(event => {
       window.addEventListener(
         event,
-        () => throttleResetIdle(),
-        eventlistenerOptions
+        throttleResetIdleTime,
+        eventListenerOptions
       )
     })
 
     documentIdleEvents.forEach(event =>
       document.addEventListener(
         event,
-        () => throttleResetIdle(),
-        eventlistenerOptions
+        throttleResetIdleTime,
+        eventListenerOptions
       )
     )
   }

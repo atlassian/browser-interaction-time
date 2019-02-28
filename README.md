@@ -76,7 +76,7 @@ browserInteractionTime.addTimeIntervalEllapsedCallback(cb)
 const callbackData = {
   timeInMilliseconds: 1000,
   callback: () => console.log('callback')
-  pending: false
+  pending: true
 }
 browserInteractionTime.addAbsoluteTimeEllapsedCallback(callbackData)
 ```
