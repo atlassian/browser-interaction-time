@@ -8,6 +8,8 @@ const exec = (testTimerFn: Function) => {
   setInterval(testTimerFn, 1000)
 }
 
+jest.mock('lodash/throttle', () => ({ default: jest.fn(), __esModule: true }))
+
 /**
  * BrowserInteractionTime test
  */

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var throttle_1 = require("lodash/throttle");
 var windowIdleEvents = ['scroll', 'resize'];
 var documentIdleEvents = [
     'mousemove',
@@ -56,6 +57,7 @@ var BrowserInteractionTime = /** @class */ (function () {
             }
         };
         this.resetIdleTime = function () {
+            console.log('called resetIdleTime');
             if (_this.idle) {
                 _this.startTimer();
             }
@@ -66,12 +68,15 @@ var BrowserInteractionTime = /** @class */ (function () {
             var eventlistenerOptions = { passive: true };
             window.addEventListener('blur', _this.onBrowserTabInactive, eventlistenerOptions);
             window.addEventListener('focus', _this.onBrowserTabActive, eventlistenerOptions);
+            var throttleResetIdle = throttle_1.default(_this.resetIdleTime, 2000, {
+                leading: true,
+                trailing: false
+            });
             windowIdleEvents.forEach(function (event) {
-                console.log('register event for', event);
-                window.addEventListener(event, _this.resetIdleTime, eventlistenerOptions);
+                window.addEventListener(event, function () { return throttleResetIdle(); }, eventlistenerOptions);
             });
             documentIdleEvents.forEach(function (event) {
-                return document.addEventListener(event, _this.resetIdleTime, eventlistenerOptions);
+                return document.addEventListener(event, function () { return throttleResetIdle(); }, eventlistenerOptions);
             });
         };
         this.unregisterEventListeners = function () {

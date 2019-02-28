@@ -1,3 +1,5 @@
+import throttle from 'lodash/throttle'
+
 interface BaseTimeEllapsedCallbackData {
   callback: (timeInMs: number) => void
   timeInMilliseconds: number
@@ -148,6 +150,7 @@ export default class BrowserInteractionTime {
   }
 
   private resetIdleTime = () => {
+    console.log('called resetIdleTime')
     if (this.idle) {
       this.startTimer()
     }
@@ -169,13 +172,24 @@ export default class BrowserInteractionTime {
       eventlistenerOptions
     )
 
+    const throttleResetIdle = throttle(this.resetIdleTime, 2000, {
+      leading: true,
+      trailing: false
+    })
     windowIdleEvents.forEach(event => {
-      console.log('register event for', event)
-      window.addEventListener(event, this.resetIdleTime, eventlistenerOptions)
+      window.addEventListener(
+        event,
+        () => throttleResetIdle(),
+        eventlistenerOptions
+      )
     })
 
     documentIdleEvents.forEach(event =>
-      document.addEventListener(event, this.resetIdleTime, eventlistenerOptions)
+      document.addEventListener(
+        event,
+        () => throttleResetIdle(),
+        eventlistenerOptions
+      )
     )
   }
 
