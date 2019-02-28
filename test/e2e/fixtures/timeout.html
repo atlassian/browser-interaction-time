@@ -4,56 +4,56 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
 <html class="no-js">
-  <!--<![endif]-->
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="" />
-  </head>
-  <body>
-    <h2 class="headline">⏰browser-interaction-time</h2>
-    <script src="../../../dist/browser-interaction-time.umd.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        var appendMessageToDom = text => time => {
-          const element = document.createElement('div')
-          element.className = text
+<!--<![endif]-->
 
-          element.innerHTML = `<span>${text}: ${time} ms</span>`
-          document.body.appendChild(element)
-        }
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="" />
+</head>
 
-        var bit = new window.browserInteractionTime({
-          timeIntervalEllapsedCallbacks: [
-            {
-              timeInMilliseconds: 1000,
-              callback: appendMessageToDom('timer-reached-interval'),
-              multiplier: x => x * 2
-            }
-          ],
-          absoluteTimeEllapsedCallbacks: [
-            {
-              timeInMilliseconds: 1000,
-              callback: appendMessageToDom('timer-reached-absolute'),
-              pending: false
-            },
-            {
-              timeInMilliseconds: 9000,
-              callback: appendMessageToDom('timer-reached-absolute'),
-              pending: false
-            }
-          ],
-          browserTabInactiveCallbacks: [
-            appendMessageToDom('tab-became-inactive')
-          ],
-          browserTabActiveCallbacks: [appendMessageToDom('tab-became-active')],
-          idleTimeoutMs: 3000
-        })
-        bit.startTimer()
+<body>
+  <h2 class="headline">⏰browser-interaction-time</h2>
+  <script src="../../../dist/browser-interaction-time.umd.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var appendMessageToDom = text => time => {
+        const element = document.createElement('div')
+        element.className = text
+
+        element.innerHTML = `<span>${text}: ${time} ms</span>`
+        document.body.appendChild(element)
+      }
+
+      var bit = new window.browserInteractionTime({
+        timeIntervalEllapsedCallbacks: [{
+          timeInMilliseconds: 1000,
+          callback: appendMessageToDom('timer-reached-interval'),
+          multiplier: x => x * 2
+        }],
+        absoluteTimeEllapsedCallbacks: [{
+            timeInMilliseconds: 1000,
+            callback: appendMessageToDom('timer-reached-absolute'),
+            pending: true
+          },
+          {
+            timeInMilliseconds: 9000,
+            callback: appendMessageToDom('timer-reached-absolute'),
+            pending: true
+          }
+        ],
+        browserTabInactiveCallbacks: [
+          appendMessageToDom('tab-became-inactive')
+        ],
+        browserTabActiveCallbacks: [appendMessageToDom('tab-became-active')],
+        idleTimeoutMs: 3000
       })
-    </script>
-  </body>
+      bit.startTimer()
+    })
+  </script>
+</body>
+
 </html>

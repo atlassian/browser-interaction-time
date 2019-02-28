@@ -581,9 +581,9 @@
               // check all callbacks time and if passed execute callback
               _this.absoluteTimeEllapsedCallbacks.forEach(function (_a, index) {
                   var callback = _a.callback, pending = _a.pending, timeInMilliseconds = _a.timeInMilliseconds;
-                  if (!pending && timeInMilliseconds <= _this.getTimeInMilliseconds()) {
+                  if (pending && timeInMilliseconds <= _this.getTimeInMilliseconds()) {
                       callback(_this.getTimeInMilliseconds());
-                      _this.absoluteTimeEllapsedCallbacks[index].pending = true;
+                      _this.absoluteTimeEllapsedCallbacks[index].pending = false;
                   }
               });
               _this.timeIntervalEllapsedCallbacks.forEach(function (_a, index) {
@@ -610,18 +610,18 @@
               _this.currentIdleTimeMs = 0;
           };
           this.registerEventListeners = function () {
-              var eventlistenerOptions = { passive: true };
-              window.addEventListener('blur', _this.onBrowserTabInactive, eventlistenerOptions);
-              window.addEventListener('focus', _this.onBrowserTabActive, eventlistenerOptions);
-              var throttleResetIdle = throttle_1(_this.resetIdleTime, 2000, {
+              var eventListenerOptions = { passive: true };
+              window.addEventListener('blur', _this.onBrowserTabInactive, eventListenerOptions);
+              window.addEventListener('focus', _this.onBrowserTabActive, eventListenerOptions);
+              var throttleResetIdleTime = throttle_1(_this.resetIdleTime, 2000, {
                   leading: true,
                   trailing: false
               });
               windowIdleEvents.forEach(function (event) {
-                  window.addEventListener(event, function () { return throttleResetIdle(); }, eventlistenerOptions);
+                  window.addEventListener(event, throttleResetIdleTime, eventListenerOptions);
               });
               documentIdleEvents.forEach(function (event) {
-                  return document.addEventListener(event, function () { return throttleResetIdle(); }, eventlistenerOptions);
+                  return document.addEventListener(event, throttleResetIdleTime, eventListenerOptions);
               });
           };
           this.unregisterEventListeners = function () {
@@ -704,7 +704,7 @@
           this.browserTabActiveCallbacks = browserTabActiveCallbacks || [];
           this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || [];
           this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100;
-          this.idleTimeoutMs = idleTimeoutMs || 30000; // 30s
+          this.idleTimeoutMs = idleTimeoutMs || 3000; // 3s
           this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || [];
           this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
           this.registerEventListeners();
