@@ -150,7 +150,6 @@ export default class BrowserInteractionTime {
   }
 
   private resetIdleTime = () => {
-    console.log('called resetIdleTime')
     if (this.idle) {
       this.startTimer()
     }
