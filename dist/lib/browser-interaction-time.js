@@ -12,8 +12,8 @@ var documentIdleEvents = [
 ];
 var BrowserInteractionTime = /** @class */ (function () {
     function BrowserInteractionTime(_a) {
-        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
         var _this = this;
+        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
         this.onBrowserTabInactive = function (event) {
             // if running pause timer
             if (_this.isRunning()) {
@@ -57,7 +57,6 @@ var BrowserInteractionTime = /** @class */ (function () {
             }
         };
         this.resetIdleTime = function () {
-            console.log('called resetIdleTime');
             if (_this.idle) {
                 _this.startTimer();
             }
