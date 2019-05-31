@@ -1,4 +1,3 @@
-import '../styles/index.scss';
 import BrowserInteractionTime from '../../../dist/browser-interaction-time.umd';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,13 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   var bit = new BrowserInteractionTime({
-    timeIntervalEllapsedCallbacks: [
-      {
+    timeIntervalEllapsedCallbacks: [{
         timeInMilliseconds: 1000,
         callback: appendMessageToDom('Timer reached'),
         multiplier: x => x * 2
-      }
-    ],
+    }],
     absoluteTimeEllapsedCallbacks: [],
     browserTabInactiveCallbacks: [appendMessageToDom('Tab became inactive')],
     browserTabActiveCallbacks: [appendMessageToDom('Tab became active')],

@@ -18,8 +18,7 @@ module.exports = merge(common, {
     })
   ],
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.(js)$/,
         include: Path.resolve(__dirname, '../src'),
         enforce: 'pre',
@@ -32,10 +31,6 @@ module.exports = merge(common, {
         test: /\.(js)$/,
         include: Path.resolve(__dirname, '../src'),
         loader: 'babel-loader'
-      },
-      {
-        test: /\.s?css$/i,
-        use: ['style-loader', 'css-loader?sourceMap=true', 'sass-loader']
       }
     ]
   }
