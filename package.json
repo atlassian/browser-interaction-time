@@ -121,7 +121,7 @@
     "testcafe-live": "^0.1.4",
     "travis-deploy-once": "^5.0.9",
     "ts-jest": "^24.0.0",
-    "ts-node": "^8.0.1",
+    "ts-node": "^8.3.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",
     "tslint-config-standard": "^8.0.1",
