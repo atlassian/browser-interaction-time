@@ -1,12 +1,26 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var throttle_1 = require("lodash/throttle");
 var windowIdleEvents = ['scroll', 'resize'];
 var documentIdleEvents = [
-    'mousemove',
-    'keyup',
+    'wheel',
     'keydown',
+    'keyup',
+    'mousedown',
+    'mousemove',
     'touchstart',
+    'touchmove',
     'click',
     'contextmenu'
 ];
@@ -64,18 +78,19 @@ var BrowserInteractionTime = /** @class */ (function () {
             _this.currentIdleTimeMs = 0;
         };
         this.registerEventListeners = function () {
-            var eventListenerOptions = { passive: true };
-            window.addEventListener('blur', _this.onBrowserTabInactive, eventListenerOptions);
-            window.addEventListener('focus', _this.onBrowserTabActive, eventListenerOptions);
+            var documentListenerOptions = { passive: true };
+            var windowListenerOptions = __assign({}, documentListenerOptions, { capture: true });
+            window.addEventListener('blur', _this.onBrowserTabInactive, windowListenerOptions);
+            window.addEventListener('focus', _this.onBrowserTabActive, windowListenerOptions);
             var throttleResetIdleTime = throttle_1.default(_this.resetIdleTime, 2000, {
                 leading: true,
                 trailing: false
             });
             windowIdleEvents.forEach(function (event) {
-                window.addEventListener(event, throttleResetIdleTime, eventListenerOptions);
+                window.addEventListener(event, throttleResetIdleTime, windowListenerOptions);
             });
             documentIdleEvents.forEach(function (event) {
-                return document.addEventListener(event, throttleResetIdleTime, eventListenerOptions);
+                return document.addEventListener(event, throttleResetIdleTime, documentListenerOptions);
             });
         };
         this.unregisterEventListeners = function () {
