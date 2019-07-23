@@ -49,10 +49,13 @@ interface Measures {
 }
 const windowIdleEvents = ['scroll', 'resize']
 const documentIdleEvents = [
-  'mousemove',
-  'keyup',
+  'wheel',
   'keydown',
+  'keyup',
+  'mousedown',
+  'mousemove',
   'touchstart',
+  'touchmove',
   'click',
   'contextmenu'
 ]
@@ -158,17 +161,18 @@ export default class BrowserInteractionTime {
   }
 
   private registerEventListeners = () => {
-    const eventListenerOptions = { passive: true }
+    const documentListenerOptions = { passive: true }
+    const windowListenerOptions = { ...documentListenerOptions, capture: true }
 
     window.addEventListener(
       'blur',
       this.onBrowserTabInactive,
-      eventListenerOptions
+      windowListenerOptions
     )
     window.addEventListener(
       'focus',
       this.onBrowserTabActive,
-      eventListenerOptions
+      windowListenerOptions
     )
 
     const throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
@@ -179,7 +183,7 @@ export default class BrowserInteractionTime {
       window.addEventListener(
         event,
         throttleResetIdleTime,
-        eventListenerOptions
+        windowListenerOptions
       )
     })
 
@@ -187,7 +191,7 @@ export default class BrowserInteractionTime {
       document.addEventListener(
         event,
         throttleResetIdleTime,
-        eventListenerOptions
+        documentListenerOptions
       )
     )
   }
