@@ -3,11 +3,16 @@ branches:
   only:
     - master
     - '/^greenkeeper/.*$/'
-cache: npm
+cache:
+  directories:
+    - ~/.npm
 notifications:
   email: false
 node_js:
-  - node
+  - '10'
+  - '11'
+  - '8'
+  - '6'
 before_install:
   - stty cols 80
 script:
@@ -16,5 +21,6 @@ script:
   - npm ci
   - npm run build
 after_success:
-  - npm run deploy-docs
-  - npm run semantic-release
+  - npm run travis-deploy-once "npm run report-coverage"
+  - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run deploy-docs"; fi
+  - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run travis-deploy-once "npm run semantic-release"; fi
