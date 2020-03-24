@@ -19,7 +19,7 @@
     "copy-webpack-plugin": "^5.0.0",
     "eslint": "^5.14.0",
     "eslint-loader": "^3.0.0",
-    "file-loader": "^5.0.0",
+    "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.0.0-beta.2",
     "mini-css-extract-plugin": "^0.8.0",
     "webpack": "^4.29.4",
