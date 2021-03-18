@@ -57,7 +57,7 @@ const documentIdleEvents = [
   'touchstart',
   'touchmove',
   'click',
-  'contextmenu'
+  'contextmenu',
 ]
 
 export default class BrowserInteractionTime {
@@ -82,7 +82,7 @@ export default class BrowserInteractionTime {
     checkCallbacksIntervalMs,
     browserTabInactiveCallbacks,
     browserTabActiveCallbacks,
-    idleTimeoutMs
+    idleTimeoutMs,
   }: Settings) {
     this.running = false
     this.times = []
@@ -106,7 +106,7 @@ export default class BrowserInteractionTime {
       this.stopTimer()
     }
 
-    this.browserTabInactiveCallbacks.forEach(fn =>
+    this.browserTabInactiveCallbacks.forEach((fn) =>
       fn(this.getTimeInMilliseconds())
     )
   }
@@ -117,7 +117,7 @@ export default class BrowserInteractionTime {
       this.startTimer()
     }
 
-    this.browserTabActiveCallbacks.forEach(fn =>
+    this.browserTabActiveCallbacks.forEach((fn) =>
       fn(this.getTimeInMilliseconds())
     )
   }
@@ -177,9 +177,9 @@ export default class BrowserInteractionTime {
 
     const throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
       leading: true,
-      trailing: false
+      trailing: false,
     })
-    windowIdleEvents.forEach(event => {
+    windowIdleEvents.forEach((event) => {
       window.addEventListener(
         event,
         throttleResetIdleTime,
@@ -187,7 +187,7 @@ export default class BrowserInteractionTime {
       )
     })
 
-    documentIdleEvents.forEach(event =>
+    documentIdleEvents.forEach((event) =>
       document.addEventListener(
         event,
         throttleResetIdleTime,
@@ -199,11 +199,11 @@ export default class BrowserInteractionTime {
   private unregisterEventListeners = () => {
     window.removeEventListener('blur', this.onBrowserTabInactive)
     window.removeEventListener('focus', this.onBrowserTabActive)
-    windowIdleEvents.forEach(event =>
+    windowIdleEvents.forEach((event) =>
       window.removeEventListener(event, this.resetIdleTime)
     )
 
-    documentIdleEvents.forEach(event =>
+    documentIdleEvents.forEach((event) =>
       document.removeEventListener(event, this.resetIdleTime)
     )
   }
@@ -224,7 +224,7 @@ export default class BrowserInteractionTime {
     }
     this.times.push({
       start: performance.now(),
-      stop: null
+      stop: null,
     })
     this.running = true
   }
@@ -315,7 +315,7 @@ export default class BrowserInteractionTime {
     this.measures[name].push({
       name,
       startTime: startMark.time,
-      duration: endMark.time - startMark.time
+      duration: endMark.time - startMark.time,
     })
   }
 
@@ -325,5 +325,9 @@ export default class BrowserInteractionTime {
     }
 
     return this.measures[name]
+  }
+
+  public isIdle() {
+    return this.isIdle
   }
 }
