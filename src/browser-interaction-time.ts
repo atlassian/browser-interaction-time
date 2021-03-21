@@ -22,6 +22,8 @@ interface Settings {
   absoluteTimeEllapsedCallbacks?: AbsoluteTimeEllapsedCallbackData[]
   browserTabInactiveCallbacks?: BasicCallback[]
   browserTabActiveCallbacks?: BasicCallback[]
+  idleCallbacks?: BasicCallback[]
+  activeCallbacks?: BasicCallback[]
   idleTimeoutMs?: number
   checkCallbacksIntervalMs?: number
 }
@@ -57,7 +59,7 @@ const documentIdleEvents = [
   'touchstart',
   'touchmove',
   'click',
-  'contextmenu'
+  'contextmenu',
 ]
 
 export default class BrowserInteractionTime {
@@ -71,6 +73,8 @@ export default class BrowserInteractionTime {
   private checkCallbacksIntervalMs: number
   private browserTabActiveCallbacks: BasicCallback[]
   private browserTabInactiveCallbacks: BasicCallback[]
+  private idleCallbacks: BasicCallback[]
+  private activeCallbacks: BasicCallback[]
   private timeIntervalEllapsedCallbacks: TimeIntervalEllapsedCallbackData[]
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
   private marks: Marks
@@ -81,8 +85,10 @@ export default class BrowserInteractionTime {
     absoluteTimeEllapsedCallbacks,
     checkCallbacksIntervalMs,
     browserTabInactiveCallbacks,
+    idleCallbacks,
+    activeCallbacks,
     browserTabActiveCallbacks,
-    idleTimeoutMs
+    idleTimeoutMs,
   }: Settings) {
     this.running = false
     this.times = []
@@ -96,6 +102,8 @@ export default class BrowserInteractionTime {
     this.idleTimeoutMs = idleTimeoutMs || 3000 // 3s
     this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || []
     this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || []
+    this.idleCallbacks = idleCallbacks || []
+    this.activeCallbacks = activeCallbacks || []
 
     this.registerEventListeners()
   }
@@ -106,7 +114,7 @@ export default class BrowserInteractionTime {
       this.stopTimer()
     }
 
-    this.browserTabInactiveCallbacks.forEach(fn =>
+    this.browserTabInactiveCallbacks.forEach((fn) =>
       fn(this.getTimeInMilliseconds())
     )
   }
@@ -117,7 +125,7 @@ export default class BrowserInteractionTime {
       this.startTimer()
     }
 
-    this.browserTabActiveCallbacks.forEach(fn =>
+    this.browserTabActiveCallbacks.forEach((fn) =>
       fn(this.getTimeInMilliseconds())
     )
   }
@@ -147,6 +155,7 @@ export default class BrowserInteractionTime {
     if (this.currentIdleTimeMs >= this.idleTimeoutMs && this.isRunning()) {
       this.idle = true
       this.stopTimer()
+      this.idleCallbacks.forEach((fn) => fn(this.getTimeInMilliseconds()))
     } else {
       this.currentIdleTimeMs += this.checkCallbacksIntervalMs
     }
@@ -156,6 +165,7 @@ export default class BrowserInteractionTime {
     if (this.idle) {
       this.startTimer()
     }
+    this.activeCallbacks.forEach((fn) => fn(this.getTimeInMilliseconds()))
     this.idle = false
     this.currentIdleTimeMs = 0
   }
@@ -177,9 +187,9 @@ export default class BrowserInteractionTime {
 
     const throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
       leading: true,
-      trailing: false
+      trailing: false,
     })
-    windowIdleEvents.forEach(event => {
+    windowIdleEvents.forEach((event) => {
       window.addEventListener(
         event,
         throttleResetIdleTime,
@@ -187,7 +197,7 @@ export default class BrowserInteractionTime {
       )
     })
 
-    documentIdleEvents.forEach(event =>
+    documentIdleEvents.forEach((event) =>
       document.addEventListener(
         event,
         throttleResetIdleTime,
@@ -199,11 +209,11 @@ export default class BrowserInteractionTime {
   private unregisterEventListeners = () => {
     window.removeEventListener('blur', this.onBrowserTabInactive)
     window.removeEventListener('focus', this.onBrowserTabActive)
-    windowIdleEvents.forEach(event =>
+    windowIdleEvents.forEach((event) =>
       window.removeEventListener(event, this.resetIdleTime)
     )
 
-    documentIdleEvents.forEach(event =>
+    documentIdleEvents.forEach((event) =>
       document.removeEventListener(event, this.resetIdleTime)
     )
   }
@@ -224,7 +234,7 @@ export default class BrowserInteractionTime {
     }
     this.times.push({
       start: performance.now(),
-      stop: null
+      stop: null,
     })
     this.running = true
   }
@@ -261,6 +271,14 @@ export default class BrowserInteractionTime {
     this.browserTabActiveCallbacks.push(browserTabActiveCallback)
   }
 
+  public addIdleCallback = (inactiveCallback: BasicCallback) => {
+    this.idleCallbacks.push(inactiveCallback)
+  }
+
+  public addActiveCallback = (activeCallback: BasicCallback) => {
+    this.activeCallbacks.push(activeCallback)
+  }
+
   public getTimeInMilliseconds = (): number => {
     return this.times.reduce((acc, current) => {
       if (current.stop) {
@@ -274,6 +292,10 @@ export default class BrowserInteractionTime {
 
   public isRunning = () => {
     return this.running
+  }
+
+  public isIdle = () => {
+    return this.idle
   }
 
   public reset = () => {
@@ -315,7 +337,7 @@ export default class BrowserInteractionTime {
     this.measures[name].push({
       name,
       startTime: startMark.time,
-      duration: endMark.time - startMark.time
+      duration: endMark.time - startMark.time,
     })
   }
 
