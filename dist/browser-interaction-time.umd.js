@@ -2,7 +2,7 @@
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
     (global = global || self, global.browserInteractionTime = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
@@ -489,7 +489,6 @@
           }
           if (maxing) {
             // Handle invocations in a tight loop.
-            clearTimeout(timerId);
             timerId = setTimeout(timerExpired, wait);
             return invokeFunc(lastCallTime);
           }
@@ -583,12 +582,12 @@
         'touchstart',
         'touchmove',
         'click',
-        'contextmenu'
+        'contextmenu',
     ];
     var BrowserInteractionTime = /** @class */ (function () {
         function BrowserInteractionTime(_a) {
+            var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, idleCallbacks = _a.idleCallbacks, activeCallbacks = _a.activeCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
             var _this = this;
-            var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
             this.onBrowserTabInactive = function (event) {
                 // if running pause timer
                 if (_this.isRunning()) {
@@ -626,6 +625,7 @@
                 if (_this.currentIdleTimeMs >= _this.idleTimeoutMs && _this.isRunning()) {
                     _this.idle = true;
                     _this.stopTimer();
+                    _this.idleCallbacks.forEach(function (fn) { return fn(_this.getTimeInMilliseconds()); });
                 }
                 else {
                     _this.currentIdleTimeMs += _this.checkCallbacksIntervalMs;
@@ -635,6 +635,7 @@
                 if (_this.idle) {
                     _this.startTimer();
                 }
+                _this.activeCallbacks.forEach(function (fn) { return fn(_this.getTimeInMilliseconds()); });
                 _this.idle = false;
                 _this.currentIdleTimeMs = 0;
             };
@@ -645,7 +646,7 @@
                 window.addEventListener('focus', _this.onBrowserTabActive, windowListenerOptions);
                 var throttleResetIdleTime = throttle_1(_this.resetIdleTime, 2000, {
                     leading: true,
-                    trailing: false
+                    trailing: false,
                 });
                 windowIdleEvents.forEach(function (event) {
                     window.addEventListener(event, throttleResetIdleTime, windowListenerOptions);
@@ -679,7 +680,7 @@
                 }
                 _this.times.push({
                     start: performance.now(),
-                    stop: null
+                    stop: null,
                 });
                 _this.running = true;
             };
@@ -702,6 +703,12 @@
             this.addBrowserTabActiveCallback = function (browserTabActiveCallback) {
                 _this.browserTabActiveCallbacks.push(browserTabActiveCallback);
             };
+            this.addIdleCallback = function (inactiveCallback) {
+                _this.idleCallbacks.push(inactiveCallback);
+            };
+            this.addActiveCallback = function (activeCallback) {
+                _this.activeCallbacks.push(activeCallback);
+            };
             this.getTimeInMilliseconds = function () {
                 return _this.times.reduce(function (acc, current) {
                     if (current.stop) {
@@ -715,6 +722,9 @@
             };
             this.isRunning = function () {
                 return _this.running;
+            };
+            this.isIdle = function () {
+                return _this.idle;
             };
             this.reset = function () {
                 _this.times = [];
@@ -737,6 +747,8 @@
             this.idleTimeoutMs = idleTimeoutMs || 3000; // 3s
             this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || [];
             this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
+            this.idleCallbacks = idleCallbacks || [];
+            this.activeCallbacks = activeCallbacks || [];
             this.registerEventListeners();
         }
         BrowserInteractionTime.prototype.mark = function (key) {
@@ -762,7 +774,7 @@
             this.measures[name].push({
                 name: name,
                 startTime: startMark.time,
-                duration: endMark.time - startMark.time
+                duration: endMark.time - startMark.time,
             });
         };
         BrowserInteractionTime.prototype.getMeasures = function (name) {
@@ -776,5 +788,5 @@
 
     return BrowserInteractionTime;
 
-}));
+})));
 //# sourceMappingURL=browser-interaction-time.umd.js.map

@@ -14,6 +14,8 @@ interface Settings {
     absoluteTimeEllapsedCallbacks?: AbsoluteTimeEllapsedCallbackData[];
     browserTabInactiveCallbacks?: BasicCallback[];
     browserTabActiveCallbacks?: BasicCallback[];
+    idleCallbacks?: BasicCallback[];
+    activeCallbacks?: BasicCallback[];
     idleTimeoutMs?: number;
     checkCallbacksIntervalMs?: number;
 }
@@ -35,11 +37,13 @@ export default class BrowserInteractionTime {
     private checkCallbacksIntervalMs;
     private browserTabActiveCallbacks;
     private browserTabInactiveCallbacks;
+    private idleCallbacks;
+    private activeCallbacks;
     private timeIntervalEllapsedCallbacks;
     private absoluteTimeEllapsedCallbacks;
     private marks;
     private measures;
-    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, browserTabActiveCallbacks, idleTimeoutMs }: Settings);
+    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, idleCallbacks, activeCallbacks, browserTabActiveCallbacks, idleTimeoutMs, }: Settings);
     private onBrowserTabInactive;
     private onBrowserTabActive;
     private onTimePassed;
@@ -53,8 +57,11 @@ export default class BrowserInteractionTime {
     addAbsoluteTimeEllapsedCallback: (absoluteTimeEllapsedCallback: AbsoluteTimeEllapsedCallbackData) => void;
     addBrowserTabInactiveCallback: (browserTabInactiveCallback: BasicCallback) => void;
     addBrowserTabActiveCallback: (browserTabActiveCallback: BasicCallback) => void;
+    addIdleCallback: (inactiveCallback: BasicCallback) => void;
+    addActiveCallback: (activeCallback: BasicCallback) => void;
     getTimeInMilliseconds: () => number;
     isRunning: () => boolean;
+    isIdle: () => boolean;
     reset: () => void;
     destroy: () => void;
     mark(key: string): void;
