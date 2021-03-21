@@ -11,8 +11,6 @@
 [![SemVer](https://img.shields.io/badge/SemVer-2.0.0-brightgreen.svg)](http://semver.org/spec/v2.0.0.html)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release) [![Greenkeeper badge](https://badges.greenkeeper.io/atlassian/browser-interaction-time.svg)](https://greenkeeper.io/)
 
-[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=aVA5MGZZa3k5YVBZUEZQM3J3ZmQzaFpzanpuWnVYVlpSbi9CQVltRUpxVT0tLTlsYWswQnJ1Vk9qNjdkLzNFSGk0YWc9PQ==--ee207b05cd4f22463529cf2a6bebc4d0268a6129)](https://www.browserstack.com/automate/public-build/aVA5MGZZa3k5YVBZUEZQM3J3ZmQzaFpzanpuWnVYVlpSbi9CQVltRUpxVT0tLTlsYWswQnJ1Vk9qNjdkLzNFSGk0YWc9PQ==--ee207b05cd4f22463529cf2a6bebc4d0268a6129)
-
 BrowserInteractionTime lets you track the time a user is active on your webpage while ignoring time spent on a different tab or with a minimized window. It also ignores the time spent while the user is idle on a web page meaning after a certain amount of time (idleTimeoutMs) without any user interactions (scroll, mousemovement etc) the time will stop until the next user interaction.
 
 ## Importing BrowserInteractionTime
