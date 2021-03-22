@@ -29,6 +29,10 @@ jobs:
           uses: actions/setup-node@v1
           with:
             node-version: ${{ matrix.node-version }}
+          env:
+            BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+            BROWSERSTACK_ACCESSKEY: ${{ secrets.BROWSERSTACK_ACCESSKEY }}
+            BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
         - run: npm install
         - run: npm run test:prod
         - run: npm run testci:e2e
