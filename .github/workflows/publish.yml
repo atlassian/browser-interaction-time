@@ -22,6 +22,9 @@ jobs:
         run: npm run build
 
       - name: Publish packages to npm registry
-        run: npm publish --access public
+        run: npm run semantic-release
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+      
+      - name: Deploy Docs
+        run: npm run deploy-docs
