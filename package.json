@@ -98,7 +98,7 @@
     "cross-env": "^7.0.0",
     "cz-conventional-changelog": "^3.0.2",
     "husky": "^4.1.0",
-    "jest": "^24.4.0",
+    "jest": "^24.9.0",
     "jest-config": "^24.4.0",
     "jest-extended": "^0.11.1",
     "lint-staged": "^10.0.3",
