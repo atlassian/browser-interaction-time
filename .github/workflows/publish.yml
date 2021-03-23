@@ -23,10 +23,14 @@ jobs:
       - name: Build source
         run: npm run build
 
-      - name: Publish packages to npm registry
-        run: npm run semantic-release
+      - name: Semantic Release
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          semantic_version: 15.13.28  # It is recommended to specify specifying version range
+                                  # for semantic-release.
         env:
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Deploy Docs
         run: npm run deploy-docs
