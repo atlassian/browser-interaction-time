@@ -1,9 +1,11 @@
 name: PUBLISH
 
 on:
+  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    tags:
-      - 'v*'
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   publish-npm:
