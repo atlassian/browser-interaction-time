@@ -2411,6 +2411,9 @@ img {
 					<a href="browserinteractiontime.html#running" class="tsd-kind-icon">running</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a href="browserinteractiontime.html#stoptimerontabchange" class="tsd-kind-icon">stop<wbr>Timer<wbr>OnTabchange</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
 					<a href="browserinteractiontime.html#timeintervalellapsedcallbacks" class="tsd-kind-icon">time<wbr>Interval<wbr>Ellapsed<wbr>Callbacks</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
@@ -2564,6 +2567,7 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="browserinteractiontime.html#marks" class="tsd-kind-icon">marks</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="browserinteractiontime.html#measures" class="tsd-kind-icon">measures</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="browserinteractiontime.html#running" class="tsd-kind-icon">running</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="browserinteractiontime.html#stoptimerontabchange" class="tsd-kind-icon">stop<wbr>Timer<wbr>OnTabchange</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="browserinteractiontime.html#timeintervalellapsedcallbacks" class="tsd-kind-icon">time<wbr>Interval<wbr>Ellapsed<wbr>Callbacks</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="browserinteractiontime.html#times" class="tsd-kind-icon">times</a></li>
 						</ul>
@@ -2606,19 +2610,19 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Browser<wbr>Interaction<wbr>Time<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>absoluteTimeEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/absolutetimeellapsedcallbackdata.html" class="tsd-signature-type">AbsoluteTimeEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>activeCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabActiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabInactiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>checkCallbacksIntervalMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>idleCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>idleTimeoutMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>timeIntervalEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/timeintervalellapsedcallbackdata.html" class="tsd-signature-type">TimeIntervalEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="browserinteractiontime.html" class="tsd-signature-type">BrowserInteractionTime</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Browser<wbr>Interaction<wbr>Time<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>absoluteTimeEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/absolutetimeellapsedcallbackdata.html" class="tsd-signature-type">AbsoluteTimeEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>activeCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabActiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabInactiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>checkCallbacksIntervalMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>idleCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>idleTimeoutMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>stopTimerOnTabchange<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>timeIntervalEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/timeintervalellapsedcallbackdata.html" class="tsd-signature-type">TimeIntervalEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="browserinteractiontime.html" class="tsd-signature-type">BrowserInteractionTime</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L81">browser-interaction-time.ts:81</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L83">browser-interaction-time.ts:83</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
 							<li>
-								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>absoluteTimeEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/absolutetimeellapsedcallbackdata.html" class="tsd-signature-type">AbsoluteTimeEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>activeCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabActiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabInactiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>checkCallbacksIntervalMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>idleCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>idleTimeoutMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>timeIntervalEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/timeintervalellapsedcallbackdata.html" class="tsd-signature-type">TimeIntervalEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></h5>
+								<h5>__namedParameters: <span class="tsd-signature-symbol">{ </span>absoluteTimeEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/absolutetimeellapsedcallbackdata.html" class="tsd-signature-type">AbsoluteTimeEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>activeCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabActiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>browserTabInactiveCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>checkCallbacksIntervalMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>idleCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>timeInMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>idleTimeoutMs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>stopTimerOnTabchange<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>timeIntervalEllapsedCallbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/timeintervalellapsedcallbackdata.html" class="tsd-signature-type">TimeIntervalEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></h5>
 								<ul class="tsd-parameters">
 									<li class="tsd-parameter">
 										<h5>absolute<wbr>Time<wbr>Ellapsed<wbr>Callbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/absolutetimeellapsedcallbackdata.html" class="tsd-signature-type">AbsoluteTimeEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span></h5>
@@ -2642,6 +2646,9 @@ img {
 										<h5>idle<wbr>Timeout<wbr>Ms<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
 									</li>
 									<li class="tsd-parameter">
+										<h5>stop<wbr>Timer<wbr>OnTabchange<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></h5>
+									</li>
+									<li class="tsd-parameter">
 										<h5>time<wbr>Interval<wbr>Ellapsed<wbr>Callbacks<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/timeintervalellapsedcallbackdata.html" class="tsd-signature-type">TimeIntervalEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span></h5>
 									</li>
 								</ul>
@@ -2660,7 +2667,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">absolute<wbr>Time<wbr>Ellapsed<wbr>Callbacks<span class="tsd-signature-symbol">:</span> <a href="../interfaces/absolutetimeellapsedcallbackdata.html" class="tsd-signature-type">AbsoluteTimeEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L79">browser-interaction-time.ts:79</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L81">browser-interaction-time.ts:81</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2670,7 +2677,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">active<wbr>Callbacks<span class="tsd-signature-symbol">:</span> <a href="../globals.html#basiccallback" class="tsd-signature-type">BasicCallback</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L77">browser-interaction-time.ts:77</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L79">browser-interaction-time.ts:79</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2680,7 +2687,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">browser<wbr>Tab<wbr>Active<wbr>Callbacks<span class="tsd-signature-symbol">:</span> <a href="../globals.html#basiccallback" class="tsd-signature-type">BasicCallback</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L74">browser-interaction-time.ts:74</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L76">browser-interaction-time.ts:76</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2690,7 +2697,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">browser<wbr>Tab<wbr>Inactive<wbr>Callbacks<span class="tsd-signature-symbol">:</span> <a href="../globals.html#basiccallback" class="tsd-signature-type">BasicCallback</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L75">browser-interaction-time.ts:75</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L77">browser-interaction-time.ts:77</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2700,7 +2707,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">check<wbr>Callback<wbr>Interval<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L69">browser-interaction-time.ts:69</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L70">browser-interaction-time.ts:70</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2710,7 +2717,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">check<wbr>Callbacks<wbr>Interval<wbr>Ms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L73">browser-interaction-time.ts:73</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L74">browser-interaction-time.ts:74</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2720,7 +2727,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">current<wbr>Idle<wbr>Time<wbr>Ms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L70">browser-interaction-time.ts:70</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L71">browser-interaction-time.ts:71</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2730,7 +2737,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">idle<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L68">browser-interaction-time.ts:68</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L69">browser-interaction-time.ts:69</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2740,7 +2747,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">idle<wbr>Callbacks<span class="tsd-signature-symbol">:</span> <a href="../globals.html#basiccallback" class="tsd-signature-type">BasicCallback</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L76">browser-interaction-time.ts:76</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L78">browser-interaction-time.ts:78</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2750,7 +2757,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">idle<wbr>Timeout<wbr>Ms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L72">browser-interaction-time.ts:72</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L73">browser-interaction-time.ts:73</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2760,7 +2767,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">marks<span class="tsd-signature-symbol">:</span> <a href="../interfaces/marks.html" class="tsd-signature-type">Marks</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L80">browser-interaction-time.ts:80</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L82">browser-interaction-time.ts:82</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2770,7 +2777,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">measures<span class="tsd-signature-symbol">:</span> <a href="../interfaces/measures.html" class="tsd-signature-type">Measures</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L81">browser-interaction-time.ts:81</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L83">browser-interaction-time.ts:83</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2780,7 +2787,17 @@ img {
 				<div class="tsd-signature tsd-kind-icon">running<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L66">browser-interaction-time.ts:66</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L67">browser-interaction-time.ts:67</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+				<a name="stoptimerontabchange" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagPrivate">Private</span> stop<wbr>Timer<wbr>OnTabchange</h3>
+				<div class="tsd-signature tsd-kind-icon">stop<wbr>Timer<wbr>OnTabchange<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L75">browser-interaction-time.ts:75</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2790,7 +2807,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">time<wbr>Interval<wbr>Ellapsed<wbr>Callbacks<span class="tsd-signature-symbol">:</span> <a href="../interfaces/timeintervalellapsedcallbackdata.html" class="tsd-signature-type">TimeIntervalEllapsedCallbackData</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L78">browser-interaction-time.ts:78</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L80">browser-interaction-time.ts:80</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2800,7 +2817,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">times<span class="tsd-signature-symbol">:</span> <a href="../interfaces/times.html" class="tsd-signature-type">Times</a><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L67">browser-interaction-time.ts:67</a></li>
+						<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L68">browser-interaction-time.ts:68</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2817,7 +2834,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L256">browser-interaction-time.ts:256</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L260">browser-interaction-time.ts:260</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2840,7 +2857,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L278">browser-interaction-time.ts:278</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L282">browser-interaction-time.ts:282</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2863,7 +2880,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L268">browser-interaction-time.ts:268</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L272">browser-interaction-time.ts:272</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2886,7 +2903,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L262">browser-interaction-time.ts:262</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L266">browser-interaction-time.ts:266</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2909,7 +2926,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L274">browser-interaction-time.ts:274</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L278">browser-interaction-time.ts:278</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2932,7 +2949,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L250">browser-interaction-time.ts:250</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L254">browser-interaction-time.ts:254</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2955,7 +2972,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L221">browser-interaction-time.ts:221</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L225">browser-interaction-time.ts:225</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2972,7 +2989,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L305">browser-interaction-time.ts:305</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L309">browser-interaction-time.ts:309</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -2989,7 +3006,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L319">browser-interaction-time.ts:319</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L323">browser-interaction-time.ts:323</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3012,7 +3029,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L344">browser-interaction-time.ts:344</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L348">browser-interaction-time.ts:348</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3035,7 +3052,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L282">browser-interaction-time.ts:282</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L286">browser-interaction-time.ts:286</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -3052,7 +3069,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L297">browser-interaction-time.ts:297</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L301">browser-interaction-time.ts:301</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -3069,7 +3086,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L293">browser-interaction-time.ts:293</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L297">browser-interaction-time.ts:297</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -3086,7 +3103,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L312">browser-interaction-time.ts:312</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L316">browser-interaction-time.ts:316</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3109,7 +3126,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L327">browser-interaction-time.ts:327</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L331">browser-interaction-time.ts:331</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3138,7 +3155,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L122">browser-interaction-time.ts:122</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L126">browser-interaction-time.ts:126</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3161,7 +3178,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L111">browser-interaction-time.ts:111</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L115">browser-interaction-time.ts:115</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3184,7 +3201,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L133">browser-interaction-time.ts:133</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L137">browser-interaction-time.ts:137</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3201,7 +3218,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L173">browser-interaction-time.ts:173</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L177">browser-interaction-time.ts:177</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3218,7 +3235,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L301">browser-interaction-time.ts:301</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L305">browser-interaction-time.ts:305</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3235,7 +3252,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L164">browser-interaction-time.ts:164</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L168">browser-interaction-time.ts:168</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3252,7 +3269,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L227">browser-interaction-time.ts:227</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L231">browser-interaction-time.ts:231</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3269,7 +3286,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L242">browser-interaction-time.ts:242</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L246">browser-interaction-time.ts:246</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -3286,7 +3303,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/17008b5/src/browser-interaction-time.ts#L209">browser-interaction-time.ts:209</a></li>
+								<li>Defined in <a href="https://github.com/atlassian/browser-interaction-time/blob/046096d/src/browser-interaction-time.ts#L213">browser-interaction-time.ts:213</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>

@@ -25,6 +25,7 @@ interface Settings {
   idleCallbacks?: BasicCallback[]
   activeCallbacks?: BasicCallback[]
   idleTimeoutMs?: number
+  stopTimerOnTabchange?: boolean
   checkCallbacksIntervalMs?: number
 }
 interface Times {
@@ -71,6 +72,7 @@ export default class BrowserInteractionTime {
 
   private idleTimeoutMs: number
   private checkCallbacksIntervalMs: number
+  private stopTimerOnTabchange: boolean
   private browserTabActiveCallbacks: BasicCallback[]
   private browserTabInactiveCallbacks: BasicCallback[]
   private idleCallbacks: BasicCallback[]
@@ -86,6 +88,7 @@ export default class BrowserInteractionTime {
     checkCallbacksIntervalMs,
     browserTabInactiveCallbacks,
     idleCallbacks,
+    stopTimerOnTabchange,
     activeCallbacks,
     browserTabActiveCallbacks,
     idleTimeoutMs,
@@ -94,6 +97,7 @@ export default class BrowserInteractionTime {
     this.times = []
     this.idle = false
     this.currentIdleTimeMs = 0
+    this.stopTimerOnTabchange = true
     this.marks = {}
     this.measures = {}
     this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
@@ -110,7 +114,7 @@ export default class BrowserInteractionTime {
 
   private onBrowserTabInactive = (event: Event) => {
     // if running pause timer
-    if (this.isRunning()) {
+    if (this.isRunning() && this.stopTimerOnTabchange) {
       this.stopTimer()
     }
 

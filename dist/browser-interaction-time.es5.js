@@ -580,11 +580,11 @@ var documentIdleEvents = [
 ];
 var BrowserInteractionTime = /** @class */ (function () {
     function BrowserInteractionTime(_a) {
-        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, idleCallbacks = _a.idleCallbacks, activeCallbacks = _a.activeCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
+        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, idleCallbacks = _a.idleCallbacks, stopTimerOnTabchange = _a.stopTimerOnTabchange, activeCallbacks = _a.activeCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
         var _this = this;
         this.onBrowserTabInactive = function (event) {
             // if running pause timer
-            if (_this.isRunning()) {
+            if (_this.isRunning() && _this.stopTimerOnTabchange) {
                 _this.stopTimer();
             }
             _this.browserTabInactiveCallbacks.forEach(function (fn) {
@@ -733,6 +733,7 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.times = [];
         this.idle = false;
         this.currentIdleTimeMs = 0;
+        this.stopTimerOnTabchange = true;
         this.marks = {};
         this.measures = {};
         this.browserTabActiveCallbacks = browserTabActiveCallbacks || [];

@@ -17,6 +17,7 @@ interface Settings {
     idleCallbacks?: BasicCallback[];
     activeCallbacks?: BasicCallback[];
     idleTimeoutMs?: number;
+    stopTimerOnTabchange?: boolean;
     checkCallbacksIntervalMs?: number;
 }
 interface Mark {
@@ -35,6 +36,7 @@ export default class BrowserInteractionTime {
     private currentIdleTimeMs;
     private idleTimeoutMs;
     private checkCallbacksIntervalMs;
+    private stopTimerOnTabchange;
     private browserTabActiveCallbacks;
     private browserTabInactiveCallbacks;
     private idleCallbacks;
@@ -43,7 +45,7 @@ export default class BrowserInteractionTime {
     private absoluteTimeEllapsedCallbacks;
     private marks;
     private measures;
-    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, idleCallbacks, activeCallbacks, browserTabActiveCallbacks, idleTimeoutMs, }: Settings);
+    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, idleCallbacks, stopTimerOnTabchange, activeCallbacks, browserTabActiveCallbacks, idleTimeoutMs, }: Settings);
     private onBrowserTabInactive;
     private onBrowserTabActive;
     private onTimePassed;
