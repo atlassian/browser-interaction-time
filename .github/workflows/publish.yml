@@ -6,6 +6,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+    types: [closed]
 
 jobs:
   publish-npm:
