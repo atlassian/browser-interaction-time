@@ -26,7 +26,7 @@ var documentIdleEvents = [
 ];
 var BrowserInteractionTime = /** @class */ (function () {
     function BrowserInteractionTime(_a) {
-        var timeIntervalEllapsedCallbacks = _a.timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _a.absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs = _a.checkCallbacksIntervalMs, browserTabInactiveCallbacks = _a.browserTabInactiveCallbacks, idleCallbacks = _a.idleCallbacks, stopTimerOnTabchange = _a.stopTimerOnTabchange, activeCallbacks = _a.activeCallbacks, browserTabActiveCallbacks = _a.browserTabActiveCallbacks, idleTimeoutMs = _a.idleTimeoutMs;
+        var _b = _a.timeIntervalEllapsedCallbacks, timeIntervalEllapsedCallbacks = _b === void 0 ? [] : _b, _c = _a.absoluteTimeEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _c === void 0 ? [] : _c, _d = _a.checkCallbacksIntervalMs, checkCallbacksIntervalMs = _d === void 0 ? 100 : _d, _e = _a.browserTabInactiveCallbacks, browserTabInactiveCallbacks = _e === void 0 ? [] : _e, _f = _a.idleCallbacks, idleCallbacks = _f === void 0 ? [] : _f, _g = _a.stopTimerOnTabchange, stopTimerOnTabchange = _g === void 0 ? true : _g, _h = _a.activeCallbacks, activeCallbacks = _h === void 0 ? [] : _h, _j = _a.browserTabActiveCallbacks, browserTabActiveCallbacks = _j === void 0 ? [] : _j, _k = _a.idleTimeoutMs, idleTimeoutMs = _k === void 0 ? 3000 : _k;
         var _this = this;
         this.onBrowserTabInactive = function (event) {
             // if running pause timer
@@ -179,17 +179,17 @@ var BrowserInteractionTime = /** @class */ (function () {
         this.times = [];
         this.idle = false;
         this.currentIdleTimeMs = 0;
-        this.stopTimerOnTabchange = true;
         this.marks = {};
         this.measures = {};
-        this.browserTabActiveCallbacks = browserTabActiveCallbacks || [];
-        this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || [];
-        this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100;
-        this.idleTimeoutMs = idleTimeoutMs || 3000; // 3s
-        this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || [];
-        this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || [];
-        this.idleCallbacks = idleCallbacks || [];
-        this.activeCallbacks = activeCallbacks || [];
+        this.stopTimerOnTabchange = stopTimerOnTabchange;
+        this.browserTabActiveCallbacks = browserTabActiveCallbacks;
+        this.browserTabInactiveCallbacks = browserTabInactiveCallbacks;
+        this.checkCallbacksIntervalMs = checkCallbacksIntervalMs;
+        this.idleTimeoutMs = idleTimeoutMs;
+        this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks;
+        this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks;
+        this.idleCallbacks = idleCallbacks;
+        this.activeCallbacks = activeCallbacks;
         this.registerEventListeners();
     }
     BrowserInteractionTime.prototype.mark = function (key) {
