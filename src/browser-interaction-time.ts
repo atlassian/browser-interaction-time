@@ -83,31 +83,31 @@ export default class BrowserInteractionTime {
   private measures: Measures
 
   constructor({
-    timeIntervalEllapsedCallbacks,
-    absoluteTimeEllapsedCallbacks,
-    checkCallbacksIntervalMs,
-    browserTabInactiveCallbacks,
-    idleCallbacks,
-    stopTimerOnTabchange,
-    activeCallbacks,
-    browserTabActiveCallbacks,
-    idleTimeoutMs,
+    timeIntervalEllapsedCallbacks = [],
+    absoluteTimeEllapsedCallbacks = [],
+    checkCallbacksIntervalMs = 100,
+    browserTabInactiveCallbacks = [],
+    idleCallbacks = [],
+    stopTimerOnTabchange = true,
+    activeCallbacks = [],
+    browserTabActiveCallbacks = [],
+    idleTimeoutMs = 3000,
   }: Settings) {
     this.running = false
     this.times = []
     this.idle = false
     this.currentIdleTimeMs = 0
-    this.stopTimerOnTabchange = true
     this.marks = {}
     this.measures = {}
-    this.browserTabActiveCallbacks = browserTabActiveCallbacks || []
-    this.browserTabInactiveCallbacks = browserTabInactiveCallbacks || []
-    this.checkCallbacksIntervalMs = checkCallbacksIntervalMs || 100
-    this.idleTimeoutMs = idleTimeoutMs || 3000 // 3s
-    this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks || []
-    this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks || []
-    this.idleCallbacks = idleCallbacks || []
-    this.activeCallbacks = activeCallbacks || []
+    this.stopTimerOnTabchange = stopTimerOnTabchange
+    this.browserTabActiveCallbacks = browserTabActiveCallbacks
+    this.browserTabInactiveCallbacks = browserTabInactiveCallbacks
+    this.checkCallbacksIntervalMs = checkCallbacksIntervalMs
+    this.idleTimeoutMs = idleTimeoutMs
+    this.timeIntervalEllapsedCallbacks = timeIntervalEllapsedCallbacks
+    this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks
+    this.idleCallbacks = idleCallbacks
+    this.activeCallbacks = activeCallbacks
 
     this.registerEventListeners()
   }
