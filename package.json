@@ -1,6 +1,6 @@
 {
   "name": "browser-interaction-time",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "",
   "keywords": [],
   "main": "dist/browser-interaction-time.umd.js",

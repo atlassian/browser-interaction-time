@@ -112,7 +112,7 @@ export default class BrowserInteractionTime {
     this.registerEventListeners()
   }
 
-  private onBrowserTabInactive = (event: Event) => {
+  private onBrowserTabInactive = () => {
     // if running pause timer
     if (this.isRunning() && this.stopTimerOnTabchange) {
       this.stopTimer()
@@ -123,7 +123,7 @@ export default class BrowserInteractionTime {
     )
   }
 
-  private onBrowserTabActive = (event: Event) => {
+  private onBrowserTabActive = () => {
     // if not running start timer
     if (!this.isRunning()) {
       this.startTimer()
@@ -132,6 +132,14 @@ export default class BrowserInteractionTime {
     this.browserTabActiveCallbacks.forEach((fn) =>
       fn(this.getTimeInMilliseconds())
     )
+  }
+
+  private onBrowserActiveChange = () => {
+    if (document.visibilityState === 'visible') {
+      this.onBrowserTabActive()
+    } else {
+      this.onBrowserTabInactive()
+    }
   }
 
   private onTimePassed = () => {
@@ -149,9 +157,8 @@ export default class BrowserInteractionTime {
       ({ callback, timeInMilliseconds, multiplier }, index) => {
         if (timeInMilliseconds <= this.getTimeInMilliseconds()) {
           callback(this.getTimeInMilliseconds())
-          this.timeIntervalEllapsedCallbacks[
-            index
-          ].timeInMilliseconds = multiplier(timeInMilliseconds)
+          this.timeIntervalEllapsedCallbacks[index].timeInMilliseconds =
+            multiplier(timeInMilliseconds)
         }
       }
     )
@@ -178,16 +185,7 @@ export default class BrowserInteractionTime {
     const documentListenerOptions = { passive: true }
     const windowListenerOptions = { ...documentListenerOptions, capture: true }
 
-    window.addEventListener(
-      'blur',
-      this.onBrowserTabInactive,
-      windowListenerOptions
-    )
-    window.addEventListener(
-      'focus',
-      this.onBrowserTabActive,
-      windowListenerOptions
-    )
+    document.addEventListener('visibilitychange', this.onBrowserActiveChange)
 
     const throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
       leading: true,
@@ -211,8 +209,8 @@ export default class BrowserInteractionTime {
   }
 
   private unregisterEventListeners = () => {
-    window.removeEventListener('blur', this.onBrowserTabInactive)
-    window.removeEventListener('focus', this.onBrowserTabActive)
+    document.removeEventListener('visibilitychange', this.onBrowserActiveChange)
+
     windowIdleEvents.forEach((event) =>
       window.removeEventListener(event, this.resetIdleTime)
     )

@@ -1,6 +1,6 @@
 import BrowserInteractionTime, {
   TimeIntervalEllapsedCallbackData,
-  AbsoluteTimeEllapsedCallbackData
+  AbsoluteTimeEllapsedCallbackData,
 } from '../../src/browser-interaction-time'
 import 'jest-extended'
 
@@ -45,8 +45,8 @@ describe('BrowserInteractionTime', () => {
     })
 
     it('registers event listeners', () => {
-      expect(windowAddEventListenerSpy).toBeCalledTimes(4)
-      expect(documentAddEventListenerSpy).toBeCalledTimes(9)
+      expect(windowAddEventListenerSpy).toBeCalledTimes(2)
+      expect(documentAddEventListenerSpy).toBeCalledTimes(10)
     })
   })
 
@@ -58,11 +58,11 @@ describe('BrowserInteractionTime', () => {
       intervalCallback = {
         timeInMilliseconds: 2000,
         callback: jest.fn(),
-        multiplier: x => x * 2
+        multiplier: (x) => x * 2,
       }
 
       defaultBrowserInteractionTime = new BrowserInteractionTime({
-        timeIntervalEllapsedCallbacks: [intervalCallback]
+        timeIntervalEllapsedCallbacks: [intervalCallback],
       })
     })
 
@@ -99,7 +99,7 @@ describe('BrowserInteractionTime', () => {
       defaultBrowserInteractionTime.mark('mark')
       expect(defaultBrowserInteractionTime.getMarks('mark')).toHaveLength(1)
       expect(defaultBrowserInteractionTime.getMarks('mark')).toEqual([
-        { time: 5000 }
+        { time: 5000 },
       ])
     })
 
@@ -114,8 +114,8 @@ describe('BrowserInteractionTime', () => {
         {
           name: 'measure-a',
           startTime: 5000,
-          duration: 5000
-        }
+          duration: 5000,
+        },
       ])
     })
   })
@@ -129,24 +129,24 @@ describe('BrowserInteractionTime', () => {
         {
           timeInMilliseconds: 2000,
           callback: jest.fn(),
-          pending: true
+          pending: true,
         },
         {
           timeInMilliseconds: 6000,
           callback: jest.fn(),
-          pending: true
-        }
+          pending: true,
+        },
       ]
 
       defaultBrowserInteractionTime = new BrowserInteractionTime({
-        absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks
+        absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks,
       })
     })
 
     it('no callback is called', () => {
       defaultBrowserInteractionTime.startTimer()
       expect(defaultBrowserInteractionTime.isRunning()).toBe(true)
-      absoluteTimeEllapsedCallbacks.forEach(callbackObject => {
+      absoluteTimeEllapsedCallbacks.forEach((callbackObject) => {
         expect(callbackObject.callback).not.toBeCalled()
       })
     })
