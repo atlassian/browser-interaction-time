@@ -24,6 +24,7 @@ interface Settings {
   browserTabActiveCallbacks?: BasicCallback[]
   idleCallbacks?: BasicCallback[]
   activeCallbacks?: BasicCallback[]
+  extraDocumentIdleEvents?: string[]
   idleTimeoutMs?: number
   stopTimerOnTabchange?: boolean
   checkCallbacksIntervalMs?: number
@@ -50,18 +51,6 @@ interface Measure {
 interface Measures {
   [key: string]: Measure[]
 }
-const windowIdleEvents = ['scroll', 'resize']
-const documentIdleEvents = [
-  'wheel',
-  'keydown',
-  'keyup',
-  'mousedown',
-  'mousemove',
-  'touchstart',
-  'touchmove',
-  'click',
-  'contextmenu',
-]
 
 export default class BrowserInteractionTime {
   private running: boolean
@@ -81,6 +70,18 @@ export default class BrowserInteractionTime {
   private absoluteTimeEllapsedCallbacks: AbsoluteTimeEllapsedCallbackData[]
   private marks: Marks
   private measures: Measures
+  private windowIdleEvents = ['scroll', 'resize']
+  private documentIdleEvents = [
+    'wheel',
+    'keydown',
+    'keyup',
+    'mousedown',
+    'mousemove',
+    'touchstart',
+    'touchmove',
+    'click',
+    'contextmenu',
+  ]
 
   constructor({
     timeIntervalEllapsedCallbacks = [],
@@ -92,6 +93,7 @@ export default class BrowserInteractionTime {
     activeCallbacks = [],
     browserTabActiveCallbacks = [],
     idleTimeoutMs = 3000,
+    extraDocumentIdleEvents = [],
   }: Settings) {
     this.running = false
     this.times = []
@@ -108,6 +110,10 @@ export default class BrowserInteractionTime {
     this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks
     this.idleCallbacks = idleCallbacks
     this.activeCallbacks = activeCallbacks
+    this.documentIdleEvents = [
+      ...this.documentIdleEvents,
+      ...extraDocumentIdleEvents,
+    ]
 
     this.registerEventListeners()
   }
@@ -163,7 +169,11 @@ export default class BrowserInteractionTime {
       }
     )
 
-    if (this.currentIdleTimeMs >= this.idleTimeoutMs && this.isRunning()) {
+    if (
+      this.currentIdleTimeMs >= this.idleTimeoutMs &&
+      this.isRunning() &&
+      !this.idle
+    ) {
       this.idle = true
       this.stopTimer()
       this.idleCallbacks.forEach((fn) => fn(this.getTimeInMilliseconds()))
@@ -181,29 +191,30 @@ export default class BrowserInteractionTime {
     this.currentIdleTimeMs = 0
   }
 
-  private registerEventListeners = () => {
-    const documentListenerOptions = { passive: true }
-    const windowListenerOptions = { ...documentListenerOptions, capture: true }
+  throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
+    leading: true,
+    trailing: false,
+  })
 
+  documentListenerOptions = { passive: true }
+  windowListenerOptions = { ...this.documentListenerOptions, capture: true }
+
+  private registerEventListeners = () => {
     document.addEventListener('visibilitychange', this.onBrowserActiveChange)
 
-    const throttleResetIdleTime = throttle(this.resetIdleTime, 2000, {
-      leading: true,
-      trailing: false,
-    })
-    windowIdleEvents.forEach((event) => {
+    this.windowIdleEvents.forEach((event) => {
       window.addEventListener(
         event,
-        throttleResetIdleTime,
-        windowListenerOptions
+        this.throttleResetIdleTime,
+        this.windowListenerOptions
       )
     })
 
-    documentIdleEvents.forEach((event) =>
+    this.documentIdleEvents.forEach((event) =>
       document.addEventListener(
         event,
-        throttleResetIdleTime,
-        documentListenerOptions
+        this.throttleResetIdleTime,
+        this.documentListenerOptions
       )
     )
   }
@@ -211,12 +222,16 @@ export default class BrowserInteractionTime {
   private unregisterEventListeners = () => {
     document.removeEventListener('visibilitychange', this.onBrowserActiveChange)
 
-    windowIdleEvents.forEach((event) =>
-      window.removeEventListener(event, this.resetIdleTime)
+    this.windowIdleEvents.forEach((event) =>
+      window.removeEventListener(
+        event,
+        this.throttleResetIdleTime,
+        this.windowListenerOptions
+      )
     )
 
-    documentIdleEvents.forEach((event) =>
-      document.removeEventListener(event, this.resetIdleTime)
+    this.documentIdleEvents.forEach((event) =>
+      document.removeEventListener(event, this.throttleResetIdleTime)
     )
   }
 

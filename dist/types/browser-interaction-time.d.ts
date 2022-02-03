@@ -16,6 +16,7 @@ interface Settings {
     browserTabActiveCallbacks?: BasicCallback[];
     idleCallbacks?: BasicCallback[];
     activeCallbacks?: BasicCallback[];
+    extraDocumentIdleEvents?: string[];
     idleTimeoutMs?: number;
     stopTimerOnTabchange?: boolean;
     checkCallbacksIntervalMs?: number;
@@ -45,11 +46,22 @@ export default class BrowserInteractionTime {
     private absoluteTimeEllapsedCallbacks;
     private marks;
     private measures;
-    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, idleCallbacks, stopTimerOnTabchange, activeCallbacks, browserTabActiveCallbacks, idleTimeoutMs, }: Settings);
+    private windowIdleEvents;
+    private documentIdleEvents;
+    constructor({ timeIntervalEllapsedCallbacks, absoluteTimeEllapsedCallbacks, checkCallbacksIntervalMs, browserTabInactiveCallbacks, idleCallbacks, stopTimerOnTabchange, activeCallbacks, browserTabActiveCallbacks, idleTimeoutMs, extraDocumentIdleEvents, }: Settings);
     private onBrowserTabInactive;
     private onBrowserTabActive;
+    private onBrowserActiveChange;
     private onTimePassed;
     private resetIdleTime;
+    throttleResetIdleTime: (() => void) & import("lodash").Cancelable;
+    documentListenerOptions: {
+        passive: boolean;
+    };
+    windowListenerOptions: {
+        capture: boolean;
+        passive: boolean;
+    };
     private registerEventListeners;
     private unregisterEventListeners;
     private checkCallbacksOnInterval;

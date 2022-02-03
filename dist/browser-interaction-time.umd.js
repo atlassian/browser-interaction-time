@@ -572,23 +572,23 @@
 
     var throttle_1 = throttle;
 
-    var windowIdleEvents = ['scroll', 'resize'];
-    var documentIdleEvents = [
-        'wheel',
-        'keydown',
-        'keyup',
-        'mousedown',
-        'mousemove',
-        'touchstart',
-        'touchmove',
-        'click',
-        'contextmenu',
-    ];
     var BrowserInteractionTime = /** @class */ (function () {
         function BrowserInteractionTime(_a) {
-            var _b = _a.timeIntervalEllapsedCallbacks, timeIntervalEllapsedCallbacks = _b === void 0 ? [] : _b, _c = _a.absoluteTimeEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _c === void 0 ? [] : _c, _d = _a.checkCallbacksIntervalMs, checkCallbacksIntervalMs = _d === void 0 ? 100 : _d, _e = _a.browserTabInactiveCallbacks, browserTabInactiveCallbacks = _e === void 0 ? [] : _e, _f = _a.idleCallbacks, idleCallbacks = _f === void 0 ? [] : _f, _g = _a.stopTimerOnTabchange, stopTimerOnTabchange = _g === void 0 ? true : _g, _h = _a.activeCallbacks, activeCallbacks = _h === void 0 ? [] : _h, _j = _a.browserTabActiveCallbacks, browserTabActiveCallbacks = _j === void 0 ? [] : _j, _k = _a.idleTimeoutMs, idleTimeoutMs = _k === void 0 ? 3000 : _k;
+            var _b = _a.timeIntervalEllapsedCallbacks, timeIntervalEllapsedCallbacks = _b === void 0 ? [] : _b, _c = _a.absoluteTimeEllapsedCallbacks, absoluteTimeEllapsedCallbacks = _c === void 0 ? [] : _c, _d = _a.checkCallbacksIntervalMs, checkCallbacksIntervalMs = _d === void 0 ? 100 : _d, _e = _a.browserTabInactiveCallbacks, browserTabInactiveCallbacks = _e === void 0 ? [] : _e, _f = _a.idleCallbacks, idleCallbacks = _f === void 0 ? [] : _f, _g = _a.stopTimerOnTabchange, stopTimerOnTabchange = _g === void 0 ? true : _g, _h = _a.activeCallbacks, activeCallbacks = _h === void 0 ? [] : _h, _j = _a.browserTabActiveCallbacks, browserTabActiveCallbacks = _j === void 0 ? [] : _j, _k = _a.idleTimeoutMs, idleTimeoutMs = _k === void 0 ? 3000 : _k, _l = _a.extraDocumentIdleEvents, extraDocumentIdleEvents = _l === void 0 ? [] : _l;
             var _this = this;
-            this.onBrowserTabInactive = function (event) {
+            this.windowIdleEvents = ['scroll', 'resize'];
+            this.documentIdleEvents = [
+                'wheel',
+                'keydown',
+                'keyup',
+                'mousedown',
+                'mousemove',
+                'touchstart',
+                'touchmove',
+                'click',
+                'contextmenu',
+            ];
+            this.onBrowserTabInactive = function () {
                 // if running pause timer
                 if (_this.isRunning() && _this.stopTimerOnTabchange) {
                     _this.stopTimer();
@@ -597,7 +597,7 @@
                     return fn(_this.getTimeInMilliseconds());
                 });
             };
-            this.onBrowserTabActive = function (event) {
+            this.onBrowserTabActive = function () {
                 // if not running start timer
                 if (!_this.isRunning()) {
                     _this.startTimer();
@@ -605,6 +605,14 @@
                 _this.browserTabActiveCallbacks.forEach(function (fn) {
                     return fn(_this.getTimeInMilliseconds());
                 });
+            };
+            this.onBrowserActiveChange = function () {
+                if (document.visibilityState === 'visible') {
+                    _this.onBrowserTabActive();
+                }
+                else {
+                    _this.onBrowserTabInactive();
+                }
             };
             this.onTimePassed = function () {
                 // check all callbacks time and if passed execute callback
@@ -619,10 +627,13 @@
                     var callback = _a.callback, timeInMilliseconds = _a.timeInMilliseconds, multiplier = _a.multiplier;
                     if (timeInMilliseconds <= _this.getTimeInMilliseconds()) {
                         callback(_this.getTimeInMilliseconds());
-                        _this.timeIntervalEllapsedCallbacks[index].timeInMilliseconds = multiplier(timeInMilliseconds);
+                        _this.timeIntervalEllapsedCallbacks[index].timeInMilliseconds =
+                            multiplier(timeInMilliseconds);
                     }
                 });
-                if (_this.currentIdleTimeMs >= _this.idleTimeoutMs && _this.isRunning()) {
+                if (_this.currentIdleTimeMs >= _this.idleTimeoutMs &&
+                    _this.isRunning() &&
+                    !_this.idle) {
                     _this.idle = true;
                     _this.stopTimer();
                     _this.idleCallbacks.forEach(function (fn) { return fn(_this.getTimeInMilliseconds()); });
@@ -639,30 +650,28 @@
                 _this.idle = false;
                 _this.currentIdleTimeMs = 0;
             };
+            this.throttleResetIdleTime = throttle_1(this.resetIdleTime, 2000, {
+                leading: true,
+                trailing: false,
+            });
+            this.documentListenerOptions = { passive: true };
+            this.windowListenerOptions = __assign({}, this.documentListenerOptions, { capture: true });
             this.registerEventListeners = function () {
-                var documentListenerOptions = { passive: true };
-                var windowListenerOptions = __assign({}, documentListenerOptions, { capture: true });
-                window.addEventListener('blur', _this.onBrowserTabInactive, windowListenerOptions);
-                window.addEventListener('focus', _this.onBrowserTabActive, windowListenerOptions);
-                var throttleResetIdleTime = throttle_1(_this.resetIdleTime, 2000, {
-                    leading: true,
-                    trailing: false,
+                document.addEventListener('visibilitychange', _this.onBrowserActiveChange);
+                _this.windowIdleEvents.forEach(function (event) {
+                    window.addEventListener(event, _this.throttleResetIdleTime, _this.windowListenerOptions);
                 });
-                windowIdleEvents.forEach(function (event) {
-                    window.addEventListener(event, throttleResetIdleTime, windowListenerOptions);
-                });
-                documentIdleEvents.forEach(function (event) {
-                    return document.addEventListener(event, throttleResetIdleTime, documentListenerOptions);
+                _this.documentIdleEvents.forEach(function (event) {
+                    return document.addEventListener(event, _this.throttleResetIdleTime, _this.documentListenerOptions);
                 });
             };
             this.unregisterEventListeners = function () {
-                window.removeEventListener('blur', _this.onBrowserTabInactive);
-                window.removeEventListener('focus', _this.onBrowserTabActive);
-                windowIdleEvents.forEach(function (event) {
-                    return window.removeEventListener(event, _this.resetIdleTime);
+                document.removeEventListener('visibilitychange', _this.onBrowserActiveChange);
+                _this.windowIdleEvents.forEach(function (event) {
+                    return window.removeEventListener(event, _this.throttleResetIdleTime, _this.windowListenerOptions);
                 });
-                documentIdleEvents.forEach(function (event) {
-                    return document.removeEventListener(event, _this.resetIdleTime);
+                _this.documentIdleEvents.forEach(function (event) {
+                    return document.removeEventListener(event, _this.throttleResetIdleTime);
                 });
             };
             this.checkCallbacksOnInterval = function () {
@@ -750,6 +759,7 @@
             this.absoluteTimeEllapsedCallbacks = absoluteTimeEllapsedCallbacks;
             this.idleCallbacks = idleCallbacks;
             this.activeCallbacks = activeCallbacks;
+            this.documentIdleEvents = this.documentIdleEvents.concat(extraDocumentIdleEvents);
             this.registerEventListeners();
         }
         BrowserInteractionTime.prototype.mark = function (key) {
