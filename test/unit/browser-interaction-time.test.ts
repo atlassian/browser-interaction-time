@@ -1,3 +1,4 @@
+import { forEach } from 'lodash'
 import BrowserInteractionTime, {
   TimeIntervalEllapsedCallbackData,
   AbsoluteTimeEllapsedCallbackData,
@@ -8,7 +9,10 @@ const exec = (testTimerFn: Function) => {
   setInterval(testTimerFn, 1000)
 }
 
-jest.mock('lodash/throttle', () => ({ default: jest.fn(), __esModule: true }))
+jest.mock('lodash/throttle', () => ({
+  default: jest.fn((x) => x),
+  __esModule: true,
+}))
 
 /**
  * BrowserInteractionTime test
@@ -138,8 +142,10 @@ describe('BrowserInteractionTime', () => {
         },
       ]
 
-      defaultBrowserInteractionTime = new BrowserInteractionTime({
-        absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks,
+      //defaultBrowserInteractionTime = new BrowserInteractionTime({absoluteTimeEllapsedCallbacks: absoluteTimeEllapsedCallbacks,})
+      defaultBrowserInteractionTime = new BrowserInteractionTime({})
+      absoluteTimeEllapsedCallbacks.forEach((x) => {
+        defaultBrowserInteractionTime.addAbsoluteTimeEllapsedCallback(x)
       })
     })
 
@@ -213,6 +219,121 @@ describe('BrowserInteractionTime', () => {
       )
       defaultBrowserInteractionTime.reset()
       expect(defaultBrowserInteractionTime.getTimeInMilliseconds()).toEqual(0)
+    })
+  })
+
+  describe('test remaing methods', () => {
+    let defaultBrowserInteractionTime: BrowserInteractionTime
+    beforeEach(() => {
+      defaultBrowserInteractionTime = new BrowserInteractionTime({})
+    })
+
+    it('destroy defaultBrowserInteractionTime', () => {
+      defaultBrowserInteractionTime.startTimer()
+      let temp = defaultBrowserInteractionTime.destroy()
+      expect(temp).toBeUndefined()
+      defaultBrowserInteractionTime.stopTimer()
+    })
+
+    it('test isIdeal', () => {
+      defaultBrowserInteractionTime.startTimer()
+      expect(defaultBrowserInteractionTime.isIdle()).toBeFalse()
+      jest.advanceTimersByTime(8000)
+      expect(defaultBrowserInteractionTime.isIdle()).toBeTrue()
+    })
+
+    it('test with timeIntervalEllapsedCallbacks', () => {
+      let mockCallback = jest.fn()
+      defaultBrowserInteractionTime.addTimeIntervalEllapsedCallback({
+        callback: mockCallback,
+        timeInMilliseconds: 3000,
+        multiplier: (x) => x + 3000,
+      })
+      defaultBrowserInteractionTime.startTimer()
+      performance.now = performanceNowMock.mockImplementation(() => 4000)
+      jest.advanceTimersByTime(4000)
+      expect(mockCallback).toHaveBeenCalled()
+    })
+  })
+
+  describe('test resetIdleTime function', () => {
+    let defaultBrowserInteractionTime: BrowserInteractionTime
+    const windowIdleEvents = ['scroll', 'resize']
+    const documentIdleEvents = [
+      'wheel',
+      'keydown',
+      'keyup',
+      'mousedown',
+      'mousemove',
+      'touchstart',
+      'touchmove',
+      'click',
+      'contextmenu',
+    ]
+    let events: any = {}
+    beforeEach(() => {
+      events = {}
+      document.addEventListener = jest.fn((event, callback, dummy) => {
+        events[event] = callback
+      })
+      window.addEventListener = jest.fn((event, callback, dummy) => {
+        events[event] = callback
+      })
+
+      events['visibilitychange'] = jest.fn((event, callback, dummy) => {
+        events[event] = callback
+      })
+
+      defaultBrowserInteractionTime = new BrowserInteractionTime({})
+    })
+
+    it('will not call startTimer', () => {
+      documentIdleEvents.forEach((x) => {
+        events[x]()
+      })
+      windowIdleEvents.forEach((x) => {
+        events[x]()
+      })
+      let mockCallback = jest.fn(defaultBrowserInteractionTime.startTimer)
+      defaultBrowserInteractionTime.startTimer = mockCallback
+      expect(mockCallback).toBeCalledTimes(0)
+    })
+
+    it('will call startTimer', () => {
+      let mockCallback = jest.fn(defaultBrowserInteractionTime.startTimer)
+      defaultBrowserInteractionTime.startTimer = mockCallback
+      defaultBrowserInteractionTime.startTimer()
+      jest.advanceTimersByTime(8000)
+      documentIdleEvents.forEach((x) => {
+        events[x]()
+      })
+      windowIdleEvents.forEach((x) => {
+        events[x]()
+      })
+      expect(mockCallback).toBeCalledTimes(2)
+    })
+
+    it('visiblity change event', () => {
+      let mockCallbackActive = jest.fn()
+      let mockCallbackInActive = jest.fn()
+      defaultBrowserInteractionTime.addBrowserTabActiveCallback(
+        mockCallbackActive
+      )
+      defaultBrowserInteractionTime.addBrowserTabInactiveCallback(
+        mockCallbackInActive
+      )
+      Object.defineProperty(document, 'visibilityState', {
+        value: 'visible',
+        writable: true,
+      })
+      events['visibilitychange']()
+      expect(mockCallbackActive).toBeCalledTimes(1)
+      Object.defineProperty(document, 'visibilityState', {
+        value: 'hidden',
+        writable: true,
+      })
+      events['visibilitychange']()
+      expect(mockCallbackInActive).toBeCalledTimes(1)
     })
   })
 })
