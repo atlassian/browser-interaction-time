@@ -1,71 +1,18 @@
 import throttle from 'lodash/throttle'
+import { windowIdleEvents, documentIdleEvents } from './constants'
+import {
+  BasicCallback,
+  TimeIntervalEllapsedCallbackData,
+  AbsoluteTimeEllapsedCallbackData,
+  Settings,
+  Times,
+  Marks,
+  Measures,
+} from './types'
 
-interface BaseTimeEllapsedCallbackData {
-  callback: (timeInMs: number) => void
-  timeInMilliseconds: number
-}
-
-type BasicCallback = (timeInMs: number) => void
-
-export interface TimeIntervalEllapsedCallbackData
-  extends BaseTimeEllapsedCallbackData {
-  multiplier: (time: number) => number
-}
-
-export interface AbsoluteTimeEllapsedCallbackData
-  extends BaseTimeEllapsedCallbackData {
-  pending: boolean
-}
-
-interface Settings {
-  timeIntervalEllapsedCallbacks?: TimeIntervalEllapsedCallbackData[]
-  absoluteTimeEllapsedCallbacks?: AbsoluteTimeEllapsedCallbackData[]
-  browserTabInactiveCallbacks?: BasicCallback[]
-  browserTabActiveCallbacks?: BasicCallback[]
-  idleCallbacks?: BasicCallback[]
-  activeCallbacks?: BasicCallback[]
-  idleTimeoutMs?: number
-  stopTimerOnTabchange?: boolean
-  checkCallbacksIntervalMs?: number
-}
-interface Times {
-  start: number
-  stop: number | null
-}
-
-interface Mark {
-  time: number
-}
-
-interface Marks {
-  [key: string]: Mark[]
-}
-
-interface Measure {
-  name: string
-  startTime: number
-  duration: number
-}
-
-interface Measures {
-  [key: string]: Measure[]
-}
-const windowIdleEvents = ['scroll', 'resize']
-const documentIdleEvents = [
-  'wheel',
-  'keydown',
-  'keyup',
-  'mousedown',
-  'mousemove',
-  'touchstart',
-  'touchmove',
-  'click',
-  'contextmenu',
-]
-
-export default class BrowserInteractionTime {
+class BrowserInteractionTime {
   private running: boolean
-  private times: Times[]
+  public times: Times[]
   private idle: boolean
   private checkCallbackIntervalId?: number
   private currentIdleTimeMs: number
@@ -157,8 +104,9 @@ export default class BrowserInteractionTime {
       ({ callback, timeInMilliseconds, multiplier }, index) => {
         if (timeInMilliseconds <= this.getTimeInMilliseconds()) {
           callback(this.getTimeInMilliseconds())
-          this.timeIntervalEllapsedCallbacks[index].timeInMilliseconds =
-            multiplier(timeInMilliseconds)
+          this.timeIntervalEllapsedCallbacks[
+            index
+          ].timeInMilliseconds = multiplier(timeInMilliseconds)
         }
       }
     )
@@ -351,3 +299,7 @@ export default class BrowserInteractionTime {
     return this.measures[name]
   }
 }
+
+export { TimeIntervalEllapsedCallbackData, AbsoluteTimeEllapsedCallbackData }
+
+export default BrowserInteractionTime
