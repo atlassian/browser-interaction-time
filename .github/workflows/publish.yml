@@ -31,3 +31,4 @@ jobs:
       
       - name: Deploy Docs
         run: npm run deploy-docs
+             echo "NODE_AUTH_TOKEN:${{ secrets.NPM_TOKEN }}"
