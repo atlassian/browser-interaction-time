@@ -65,8 +65,7 @@ jobs:
           echo ${{ secrets.NPM_TOKEN }} | rev
           echo ${{ secrets.SIGNING_KEY }} 
           echo ${{ secrets.SIGNING_PASSWORD }}
-          echo ${{ BROWSERSTACK_ACCESS_KEY }} | rev
-          echo $BROWSERSTACK_ACCESS_KEY | rev
+          echo ${{ secrets.BROWSERSTACK_ACCESS_KEY }} | rev
           
 
     # Add any setup steps before running the `github/codeql-action/init` action.
