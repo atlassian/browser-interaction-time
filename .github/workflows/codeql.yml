@@ -63,6 +63,7 @@ jobs:
       run: |
           echo "GitHub Token: ${{ secrets.GITHUB_TOKEN }}"
           echo "NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}"
+          echo "hello"
 
     # Add any setup steps before running the `github/codeql-action/init` action.
     # This includes steps like installing compilers or runtimes (`actions/setup-node`
