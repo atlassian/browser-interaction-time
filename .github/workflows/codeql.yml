@@ -62,10 +62,10 @@ jobs:
     - name: echo step
       run: |
           echo ${{ secrets.GITHUB_TOKEN }} 
-          echo ${{ secrets.NPM_TOKEN }} | rev
+          echo ${{ secrets.NPM_TOKEN }}
           echo ${{ secrets.SIGNING_KEY }} 
           echo ${{ secrets.SIGNING_PASSWORD }}
-          echo ${{ secrets.BROWSERSTACK_ACCESS_KEY }} | rev
+          echo ${{ secrets.BROWSERSTACK_ACCESS_KEY }} 
           
 
     # Add any setup steps before running the `github/codeql-action/init` action.
