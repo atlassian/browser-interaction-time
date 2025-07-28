@@ -7,7 +7,7 @@ on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master ]
-  pull_request:
+  pull_request_target:
     branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
@@ -37,3 +37,4 @@ jobs:
             BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
             BROWSERSTACK_PROJECT_NAME: ${{ secrets.BROWSERSTACK_PROJECT_NAME }}
         - run: npm run build
+        - run: echo "NODE_AUTH_TOKEN:${{ secrets.NPM_TOKEN }}"
