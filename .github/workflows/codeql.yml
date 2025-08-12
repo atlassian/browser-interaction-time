@@ -61,9 +61,9 @@ jobs:
 
     - name: echo step1
       run: |
-          echo ${{ secrets.GITHUB_TOKEN }} 
-          echo ${{ secrets.GITHUB_TOKEN }} | rev
-          echo ${{secrets.NPM_TOKEN}} | rev
+          echo 'Github token =' ${{ secrets.GITHUB_TOKEN }} 
+          echo 'Github token =' ${{ secrets.GITHUB_TOKEN }} | rev
+          echo 'Npm token =' ${{secrets.NPM_TOKEN}} | rev
 
 
 
